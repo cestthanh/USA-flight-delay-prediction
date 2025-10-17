@@ -1,0 +1,87 @@
+\documentclass[a4paper,12pt]{report}
+
+% --- Gói hỗ trợ tiếng Việt và font ---
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese,english]{babel}
+
+% --- Căn lề và hình ảnh ---
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{graphicx}
+
+% --- Công thức toán, ký hiệu, bảng ---
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+
+% --- Tùy chỉnh header/footer ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{USTH – Data Science}
+\lhead{Test LaTeX Setup}
+\cfoot{\thepage}
+
+% --- Tiêu đề ---
+\title{Báo cáo Kiểm Tra LaTeX – VS Code + MiKTeX}
+\author{Nguyễn Tuấn Thành}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\chapter{Giới thiệu}
+Đây là một \textbf{đoạn tài liệu LaTeX mẫu} để kiểm tra xem hệ thống biên dịch trên \texttt{VS Code} có hoạt động ổn định không.
+
+Bạn có thể viết bằng tiếng Việt mà không bị lỗi font, miễn là dùng gói \verb|\usepackage[T5]{fontenc}|.
+
+\section{Một số công thức toán học}
+Ví dụ: phương trình bậc hai
+\begin{equation}
+    x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\end{equation}
+
+Một ma trận ví dụ:
+\[
+A = \begin{bmatrix}
+1 & 2 & 3\\
+4 & 5 & 6\\
+7 & 8 & 9
+\end{bmatrix}
+\]
+
+\section{Bảng và hình ảnh}
+Một bảng nhỏ minh họa:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Mô hình} & \textbf{Độ chính xác} & \textbf{Thời gian (s)} \\
+\midrule
+Linear Regression & 82.3\% & 0.45 \\
+Random Forest & 91.6\% & 1.82 \\
+LightGBM & 93.4\% & 1.21 \\
+\bottomrule
+\end{tabular}
+\caption{Kết quả so sánh mô hình Machine Learning}
+\end{table}
+
+% Chèn hình minh họa (đặt một file ảnh \texttt{example.jpg} trong cùng thư mục):
+
+\begin{figure}[h]
+\centering
+% \includegraphics[width=0.6\textwidth]{example.jpg}
+\caption{Hình ảnh minh họa (ví dụ).}
+\end{figure}
+
+\section{Kết luận}
+% Nếu bạn thấy PDF được sinh ra, có tiếng Việt, công thức, bảng và hình ảnh — thì môi trường LaTeX của bạn đã hoạt động tốt ✅.
+
+\end{document}
