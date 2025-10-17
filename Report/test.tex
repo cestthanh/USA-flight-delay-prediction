@@ -1,87 +1,212 @@
 \documentclass[a4paper,12pt]{report}
-
-% --- Gói hỗ trợ tiếng Việt và font ---
-\usepackage[utf8]{inputenc}
-\usepackage[T5]{fontenc}
-\usepackage[vietnamese,english]{babel}
-
-% --- Căn lề và hình ảnh ---
-\usepackage{geometry}
-\geometry{margin=2.5cm}
-\usepackage{graphicx}
-
-% --- Công thức toán, ký hiệu, bảng ---
-\usepackage{amsmath, amssymb}
-\usepackage{booktabs}
-\usepackage{array}
+\usepackage[margin=1in]{geometry} % 1-inch margins
+\usepackage{tikz} % For the border
+\usetikzlibrary{calc} % For coordinate calculations
+\usepackage{graphicx} % For including the logo
+\usepackage{lmodern} % Font package
+\usepackage{titlesec} % Section formatting
+\usepackage{fancyhdr} % Footer customization
+\usepackage{amsmath}
+\usepackage{listings}
 \usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{float}
+\usepackage{tocloft}
+\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black]{hyperref}
+\usepackage{lipsum}
+\usepackage{adjustbox} % trong phần preamble
+\usepackage{multicol}
+\usepackage{indentfirst}
 
-% --- Tùy chỉnh header/footer ---
-\usepackage{fancyhdr}
 \pagestyle{fancy}
-\fancyhf{}
-\rhead{USTH – Data Science}
-\lhead{Test LaTeX Setup}
-\cfoot{\thepage}
+\lhead{S\&P 500 Crisis Analysis}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
-% --- Tiêu đề ---
-\title{Báo cáo Kiểm Tra LaTeX – VS Code + MiKTeX}
-\author{Nguyễn Tuấn Thành}
-\date{\today}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,  
+    showlines=false,
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{ % Tùy chỉnh các thuộc tính
+    basicstyle=\ttfamily\small, % Kiểu chữ máy tính nhỏ
+    backgroundcolor=\color{lightgray}, % Màu nền nhẹ cho code
+    keywordstyle=\color{blue}\bfseries, % Màu xanh dương cho từ khóa, in đậm
+    commentstyle=\color{green}, % Màu xanh lá cho comment
+    stringstyle=\color{purple}, % Màu tím cho chuỗi
+    numberstyle=\tiny\color{gray}, % Màu xám cho số dòng
+    numbers=left, % Hiển thị số dòng bên trái
+    stepnumber=1, % Đánh số mỗi dòng
+    numbersep=5pt, % Khoảng cách giữa số dòng và mã
+    showstringspaces=false, % Không hiển thị dấu cách trong chuỗi
+    breaklines=true, % Ngắt dòng tự động
+    captionpos=b, % Đặt caption ở dưới code
+    frame=single, % Đặt khung xung quanh code
+}
+
 
 \begin{document}
+\thispagestyle{empty}  % Xóa số trang của trang đầu tiên
 
-\maketitle
+% --- First Page Border ---
+\begin{tikzpicture}[remember picture, overlay]
+    \draw[line width=2pt]
+        ($(current page.south west) + (0.5in, 0.5in)$) 
+        rectangle 
+        ($(current page.north east) - (0.5in, 0.5in)$);
+\end{tikzpicture}
 
-\tableofcontents
+% --- University Name ---
+\begin{center}
+    
+    {\Large \textbf{University of Science and Technology of Hanoi}}\\[0.75cm]
+    
+    % --- University Logo ---
+    
+\begin{center}
+  \makebox[\textwidth][c]{%
+    \hspace*{1.2cm} % dịch logo sang trái 1cm, bạn thử chỉnh -0.8cm hoặc -1.2cm nếu cần
+    \includegraphics[width=0.7\textwidth]{Img/usth.png}
+  }
+\end{center}
+
+    
+    \vspace{1cm}
+    {\LARGE \textbf{Fundamentals of Data Science}}\\[0.75cm]
+
+    % --- Assignment Title ---
+    \vspace{0.5cm} % khoảng cách trước Labwork I
+    {\huge \textbf{S\&P 500 Crisis Analysis}}
+    \vspace{1.5cm} % khoảng cách sau Labwork I
+\end{center}
+
+% --- Student Information ---
+\vspace{0.5cm}
+\noindent
+\begin{center}
+
+    \begin{tabular}{l c r}
+    
+        \textbf{\large Group Members:}
+        \vspace{0.5cm}
+        \\
+        \textbf{Nguyen Tuan Thanh} & 22BA13289 & thanhnt.22ba13289@usth.edu.vn
+        \vspace{0.1cm}\\
+        \textbf{Nguyen Chi Quang} & 22BA13262 & quangnc.22ba13262@usth.edu.vn \\
+    \end{tabular}
+\end{center}
+
+\vfill
+
+% --- Footer ---
+\begin{center}
+    \textit{Hanoi, Sep 2025}
+\end{center}
+\newpage
+\pagenumbering{arabic} 
+\setcounter{page}{2}  
+
+% Đặt lại số trang về 1 cho mục lục và các phần sau
+
+\tableofcontents  % Tạo mục lục tự động
+
 \newpage
 
-\chapter{Giới thiệu}
-Đây là một \textbf{đoạn tài liệu LaTeX mẫu} để kiểm tra xem hệ thống biên dịch trên \texttt{VS Code} có hoạt động ổn định không.
+% ---------------- DÀN Ý ----------------
+\chapter*{ACKNOWLEDGEMENTS}
+\addcontentsline{toc}{chapter}{ACKNOWLEDGEMENTS}
 
-Bạn có thể viết bằng tiếng Việt mà không bị lỗi font, miễn là dùng gói \verb|\usepackage[T5]{fontenc}|.
+\chapter*{ABSTRACT}
+\addcontentsline{toc}{chapter}{ABSTRACT}
 
-\section{Một số công thức toán học}
-Ví dụ: phương trình bậc hai
-\begin{equation}
-    x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
-\end{equation}
+\chapter{Introduction}
 
-Một ma trận ví dụ:
-\[
-A = \begin{bmatrix}
-1 & 2 & 3\\
-4 & 5 & 6\\
-7 & 8 & 9
-\end{bmatrix}
-\]
-
-\section{Bảng và hình ảnh}
-Một bảng nhỏ minh họa:
-
-\begin{table}[h]
+\chapter{Business Analysis}
+\section{Background}
+\section{Problem Statement}
+\section{Analytical Approach}
+\chapter{Data Collection and Management}
+\section{Introduction}
+The dataset employed in this project is the Standard\& Poor’s (S\&P) 500 Index data. It contains monthly historical records with key financial indicators such as Dividend, Earnings, and Price-to-Earnings (P/E) Ratio. The dataset consists of 1833 entries and 10 features, and is provided in CSV (Comma Separated Values) format.
+\begin{table}[H]
 \centering
-\begin{tabular}{lcc}
-\toprule
-\textbf{Mô hình} & \textbf{Độ chính xác} & \textbf{Thời gian (s)} \\
-\midrule
-Linear Regression & 82.3\% & 0.45 \\
-Random Forest & 91.6\% & 1.82 \\
-LightGBM & 93.4\% & 1.21 \\
-\bottomrule
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Date} & \textbf{SP500} & \textbf{Dividend} & \textbf{Earnings} & \textbf{CPI} & \textbf{LIR} & \textbf{Real Price} & \textbf{Real Dividend} & \textbf{Real Earnings} & \textbf{PE10}\\
+\hline
+2023-06-01 & 4345.37 & 68.71 & 181.17 & 305.11 & 3.75 & 4359.88 & 68.94 & 181.77 & 32.41 \\
+2023-05-01 & 4146.17 & 68.54 & 179.17 & 304.13 & 3.57 & 4173.45 & 68.99 & 180.35 & 31.14 \\
+2023-04-01 & 4121.47 & 68.38 & 177.17 & 303.36 & 3.46 & 4159.03 & 69.00 & 178.78 & 31.15 \\
+...&...&...&...&...&...&...&...&...&...\\
+2017-09-01 & 2492.84 & 48.17 & 107.08 & 246.82 & 2.20 & 3091.85 & 59.74 & 132.81 & 32.97 \\
+2017-08-01 & 2456.22 & 47.85 & 106.06 & 245.52 & 2.21 & 3062.56 & 59.67 & 132.24 & 32.71 \\
+\hline
 \end{tabular}
-\caption{Kết quả so sánh mô hình Machine Learning}
+\end{adjustbox}
+\caption{S\&P 500 Dataset}
 \end{table}
+The data types and detailed discussion of each feature in the dataset are provided below:
 
-% Chèn hình minh họa (đặt một file ảnh \texttt{example.jpg} trong cùng thư mục):
 
-\begin{figure}[h]
+\begin{table}[H]
 \centering
-% \includegraphics[width=0.6\textwidth]{example.jpg}
-\caption{Hình ảnh minh họa (ví dụ).}
-\end{figure}
-
-\section{Kết luận}
-% Nếu bạn thấy PDF được sinh ra, có tiếng Việt, công thức, bảng và hình ảnh — thì môi trường LaTeX của bạn đã hoạt động tốt ✅.
-
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|c|c|c|l|}
+\hline
+\textbf{Features} & \textbf{Type} & \textbf{Data Type} & \textbf{Explanation}\\
+\hline Date & datetime & Qualitative  & Timestamp of the record \\ \hline
+\hline SP500  & float & Qualitative  & The nominal value at that time. \\ \hline
+\hline Dividend & float & Qualitative  & The average dividend payout of companies. \\ \hline
+\hline Earnings & float & Qualitative  & The average earnings of companies. \\ \hline
+\hline CPI & float & Qualitative  & A measure of inflation and purchasing power. \\ \hline
+\hline LIR & float & Qualitative  & The 10-year government bond yield. \\ \hline
+\hline Real Price & float & Qualitative  & The inflation-adjusted S\&P 500 index value (using CPI). \\ \hline
+\hline Real Dividend & float & Qualitative  & Dividend values adjusted for inflation. \\ \hline
+\hline Real Earnings & float & Qualitative  & Earnings adjusted for inflation. \\ \hline
+\hline PE10 & float & Qualitative  & The cyclically adjusted price-to-earnings ratio. \\ \hline
+\end{tabular}
+\end{adjustbox}
+\caption{Features Explanation}
+\end{table}
+\section{Problem Context}
+\section{Overall Architecture}
+\section{Data Collection}
+\section{Data Management}
+\section{Data Processing}
+\chapter{Statistics}
+\section{Descriptive Statistics}
+\subsection{Full Sample}
+\subsection{Period Analysis}
+\section{Distribution Analysis}
+\section{Correlation}
+\section{Hypothesis Testing}
+\chapter{Visualization}
+\section{Market Performance}
+\section{Valuation Metrics}
+\section{Risk}
+\section{Dividends}
+\chapter*{Conclusion and Future Work}
+\chapter{References}
 \end{document}
