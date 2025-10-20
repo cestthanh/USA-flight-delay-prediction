@@ -7,7 +7,7 @@ model = joblib.load(r"D:\Project DS Final\Classi_Models\xgboost.pkl")
 
 st.set_page_config(page_title="Flight Delay Demo", layout="centered")
 st.title("✈️ Flight Delay Prediction App")
-st.caption("Demo dự đoán khả năng chuyến bay bị delay > 15 phút")
+st.caption("Demo dự đoán khả năng chuyến bay bị delay")
 
 # ==========================================================
 # 2️⃣ Nhập thông tin chuyến bay
