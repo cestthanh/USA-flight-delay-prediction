@@ -244,7 +244,7 @@ DEP\_DELAY\_GROUP & Categorical (Ordinal) & Float & Grouping of departure delay 
 \caption{Features Explanation}
 \end{table}
 \subsection{Weather Dataset}
-The weather dataset used in this project was obtained from the National Oceanic and Atmospheric Administration (NOAA), which provides historical hourly weather observations recorded at airports across the United States. To ensure consistency with the flight dataset, only data from major airports in Washington State during the second quarter (Q2) were collected. The dataset contains over 50,000 hourly records with many key meteorological, stored in CSV format, with timestamps adjusted to local time zones to enable accurate integration with flight schedules.
+The weather dataset used in this project was obtained from the \textbf{National Oceanic and Atmospheric Administration (NOAA)}, which provides historical hourly weather observations recorded at airports across the United States. To ensure consistency with the flight dataset, only data from major airports in Washington State during the second quarter (Q2) were collected. The dataset contains over 50,000 hourly records with many key meteorological, stored in CSV format, with timestamps adjusted to local time zones to enable accurate integration with flight schedules.
 \begin{table}[H]
 \centering
 \begin{adjustbox}{width=\textwidth}
@@ -260,10 +260,118 @@ The weather dataset used in this project was obtained from the National Oceanic 
 \hline
 \end{tabular}
 \end{adjustbox}
-\caption{Airline On-Time Performance Dataset}
+\caption{NOAA Dataset}
 \end{table}
+The data types and detailed discussion of each feature in the dataset are provided below:
+\begin{table}[H]
+\centering
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|c|c|c|l|}
+\hline
+STATION & Categorical & String & Identifier code where the weather data was recorded. \\ 
+\hline
+DATE & Temporal & Datetime & Timestamp representing the date and hour of the observation. \\ 
+\hline
+HourlyDewPointTemperature & Quantitative & Float & Dew point temperature (°F). \\ 
+\hline
+HourlyDryBulbTemperature & Quantitative & Float & Air temperature (°F). \\ 
+\hline
+HourlyRelativeHumidity & Quantitative & Float & Percentage of relative humidity in the air (\%). \\ 
+\hline
+HourlyVisibility & Quantitative & Float & Horizontal visibility distance (miles). \\ 
+\hline
+HourlyWindSpeed & Quantitative & Float & Average wind speed during the hour (miles per hour). \\ 
+\hline
+\end{tabular}
+\end{adjustbox}
+\caption{Features Explanation}
+\end{table}
+
 \section{Data Preparation and Cleaning}
-\subsection{Clean Flight Dataset}
+\subsection{Flight Data Cleaning and Preprocessing}
+To ensure the data is suitable for analysis and modeling, several preprocessing steps were performed:\\
+\textbf{Filtering by origin state:}
+\begin{itemize}
+\item{Kept only flights with ORIGIN\_STATE\_ABR = 'WA', since the state has five main airports, which simplifies the merging process with weather data.}
+\item {After this step, a total of 50372 flights departing from WA during Q2 were recorded.}
+\end{itemize}
+\textbf{Handling Missing and Duplicate Records:}
+\begin{itemize}
+    \item{Removed all rows with missing or zero values, except for time-related variables (DEP\_DELAY, DEP\_DEL15, DEP\_DELAY\_GROUP, DEP\_DELAY\_NEW).}
+    \item{Duplicate records were identified and removed to maintain data integrity.}
+\end{itemize}
+\textbf{Remove cancelled flight:}
+\begin{itemize}
+\item{Filtered out all cancelled flights (CANCELLED = 1) to focus on actual departure delays.}
+\item {Remove CANCELLED column.}
+\end{itemize}
+\textbf{Feature Engineering:}
+\begin{itemize}
+    \item{CRS\_DEP\_TIME and CRS\_ARR\_TIME were converted from HHMM to decimal-hour format.}
+    \item {New feature ORIGIN-DEST was created to represent flight routes for better analytical insight.}
+\end{itemize}
+\textbf{General:}
+\begin{itemize}
+    \item{After prepareing, dataset have 17 features and 50186 samples.}
+    \item {Dataset is ready for merging and analysis.}
+\end{itemize}
+\subsection{Weather Data Cleaning and Preprocessing}
+The weather dataset was cleaned and standardized to ensure accuracy and consistency before merging with the flight data
+\textbf{Handling Missing and Duplicate Records:}
+\begin{itemize}
+    \item{Removed records containing NULL values.}
+    \item{Duplicate records were identified and removed.}
+\end{itemize}
+\textbf{Extract new features:}
+\begin{itemize}
+    \item{Converted the DATE column to datetime format to enable time-based operations and ensure consistent timestamp handling.}
+    \item {Extracted the day and month information into a new column date, formatted as “MM-DD” for easier temporal alignment.}
+    \item {Extracted the hour component into a new column hour, which was later used to merge weather data with flight departure times.}
+\end{itemize}
+\textbf{Map airport codes:}
+\begin{itemize}
+    \item{The STATION codes were mapped from NOAA station IDs to corresponding airport IATA codes to ensure consistency with the flight dataset during merging.}
+\end{itemize}
+\textbf{General:}
+\begin{itemize}
+    \item{After prepareing, dataset have 8 features and 10851 samples.}
+    \item {Dataset is ready for merging and analysis.}
+\end{itemize}
+\subsection{Merging Datasets}
+After cleaning and preprocessing both datasets, they were merged to create a comprehensive dataset for analysis:
+
+\textbf{Prepare Time Columns:}
+\begin{itemize}
+    \item{Extracted the departure hour (DEP\_HOUR) from CRS\_DEP\_TIME by flooring the scheduled time to the nearest hour.}
+    \item {Created a new column FL\_DATE by combining MONTH and DAY\_OF\_MONTH, with the year temporarily set to 2025.}
+    \item {In the weather dataset, added the year “2025” to the date column (if missing) and converted it to datetime format.}
+    \item {These transformations standardized date and time formats across both datasets, enabling accurate merging by hour and location.}
+\end{itemize}
+\textbf{Merge Flight \& Weather Data}
+\begin{itemize}
+    \item{Merged flight and weather datasets using a left join on matching keys:
+ORIGIN, FL\_DATE, DEP\_HOUR -> STATION, date, hour.}
+    \item{Ensured each flight matched its corresponding hourly weather record.}
+    \item {Removed intermediate columns that were no longer needed: ["DEP\_HOUR", "FL\_DATE", "STATION", "date", "hour"].}
+    \item {The merged dataset contained 50,029 rows and 22 columns.}
+\end{itemize}
+\begin{table}[H]
+\centering
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{MONTH} & \textbf{DAY\_OF\_MONTH} & \textbf{ORIGIN} & \textbf{HourlyVisibility} & \textbf{HourlyWindSpeed} & \textbf{...} & \textbf{DEST} & \textbf{DISTANCE} & \textbf{DEP\_DELAY} & \textbf{DEP\_DEL15}\\
+\hline
+4 & 1 & GEG & 5.0 & 10.0 & ... & PHX & 1020.0 & -5.0 & 0\\
+4 & 1 & GEG & 10.0 & 10.0 & ... & PHX & 1660.0 & 15.0 & 1\\
+... & ... & ... & ... & ... & ... & ... & ... & ... & ...\\
+6 & 30 & SEA & 10.0 & 14.0 & ... & SMF & 605.0 & -5.0 & 0\\
+6 & 30 & SEA & 10.0 & 9.0 & ... & STL & 1709.0 & 10.0 & 0\\
+\hline
+\end{tabular}
+\end{adjustbox}
+\caption{Final Dataset}
+\end{table}
 \section{Overall Architecture}
 \begin{figure}[H]
     \centering
