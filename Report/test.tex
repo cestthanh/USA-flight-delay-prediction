@@ -355,6 +355,10 @@ ORIGIN, FL\_DATE, DEP\_HOUR -> STATION, date, hour.}
     \item {Removed intermediate columns that were no longer needed: ["DEP\_HOUR", "FL\_DATE", "STATION", "date", "hour"].}
     \item {The merged dataset contained 50,029 rows and 22 columns.}
 \end{itemize}
+
+\section{Feature Engineering}
+\section{Final Dataset Overview}
+
 \begin{table}[H]
 \centering
 \begin{adjustbox}{width=\textwidth}
@@ -372,62 +376,6 @@ ORIGIN, FL\_DATE, DEP\_HOUR -> STATION, date, hour.}
 \end{adjustbox}
 \caption{Final Dataset}
 \end{table}
-\section{Overall Architecture}
-\begin{figure}[H]
-    \centering
-    % \includegraphics[width=\linewidth]{DE_pipeline.jpg}
-    \caption{Data Pipeline Architecture}
-\end{figure}
-The Data Engineering pipeline is designed to ingest, manage, and prepare stock market data in a scalable and reliable manner. The main components are:
-\begin{itemize}
-    \item \textbf{Producer:} Reads the dataset and simulates streaming events, sending them into Kafka topics.
-    \item \textbf{Kafka:} Acts as the messaging and streaming platform, ensuring reliable delivery of data between producer and consumer.
-    \item \textbf{Consumer:} Retrieves data from Kafka topics and writes it into Amazon S3.
-    \item \textbf{Amazon S3:} Serves as the data lake, storing raw data for further processing.
-    \item \textbf{AWS Glue + Crawler:} Manages metadata, automatically detects schema, and organizes the data catalog.
-    \item \textbf{Amazon Athena:} Provides SQL-based querying directly on data stored in S3, enabling cleaning, transformation, and analysis.
-\end{itemize}
-
-\section{Data Collection}
-Data collection in this project is designed to simulate both batch ingestion and real-time streaming of stock market data:
-\begin{itemize}
-    \item \textbf{Batch Data (CSV):} The historical S\&P 500 dataset, is ingested into the pipeline.
-    \item \textbf{Streaming Data (Producer Simulation):} Simulates real-time stock market data by reading a static CSV file line by line and sending each record into Kafka topics using Python. Instead of loading the entire dataset at once, the script publishes records sequentially with a small delay.
-    \item \textbf{Kafka as Ingestion Layer:} Takes the simulated records from the producer, stores them reliably with replication, and distributes so that multiple consumers can process the stream in parallel.
-    \item \textbf{Consumer to Storage:} A Kafka consumer continuously listens to the topic and writes incoming records into Amazon S3 for long-term storage.
-\end{itemize}
-This setup allows the dataset to be treated not only as static batch data but also as dynamic streaming data, reflecting the real-time nature of stock market information.
-
-
-\section{Data Management}
-Once collected, the data is stored, organized, and made accessible through cloud-based services to ensure reliability and scalability:
-\begin{itemize}
-    \item \textbf{Amazon S3 (Data Lake):} Acts as the primary storage for raw data ingested from Kafka. The data can later be structured into different layers such as raw and processed for better organization.
-    \item \textbf{AWS Glue + Crawler:} Automatically detects the schema of the stored data and creates a centralized Data Catalog. This enables consistent metadata management, making the dataset queryable without manual schema definitions.
-    \item \textbf{Amazon Athena:} Provides SQL-based querying directly on top of S3 data. Through Athena, the dataset can be cleaned, filtered, and enriched with additional calculated metrics (e.g., Monthly Return, Dividend Yield).
-\end{itemize}
-This data management setup ensures that the dataset is not only properly stored but also well-structured and accessible. It transforms the raw financial data into an organized and queryable form, ready for downstream analysis and visualization.
-\section{Data Processing}
-After ingestion, all streaming records were stored in \textbf{Amazon S3} and made queryable through \textbf{Amazon Athena}. This allowed the dataset to be accessed with SQL queries for filtering, cleaning, and transforming the raw data before analysis. The processing workflow included the following steps:
-\begin{itemize}
-    \item \textbf{Data Cleaning:}
-    \begin{itemize}
-        \item \textit{Time Range Filtering:} The dataset originally spanned 1871–2023, but per business requirements only 1980–2023 was retained, so earlier records were dropped.
-        \item \textit{Null, Zero, and Duplicate Filtering:} Removed records containing NULL values, excluded entries with zero values in key financial indicators (e.g., earnings or price), and eliminated duplicate records to ensure data integrity and consistency.
-    \end{itemize}
-
-    \item \textbf{Derived Features:} Several new metrics were created, including:
-    \begin{itemize}
-        \item \textit{Monthly Return} = \(\dfrac{SP500 - Previous\_SP500}{Previous\_SP500}\)
-        \item \textit{Dividend Yield} = \(\dfrac{Dividend}{SP500}\)
-        \item \textit{P/E Ratio} = \(\dfrac{SP500}{Earnings}\)
-        \item \textit{Real Return} = \(\dfrac{Real\ Price - Previous\ Real\ Price}{Previous\ Real\ Price}\)
-        \item \textit{Volatility (12M)} = \(StdDev(\text{Monthly Return over 12 months}) \times \sqrt{12}\)
-    \end{itemize}
-    \textbf{Purpose:} Through feature engineering, we created new variables that provided insights into statistical patterns, highlight signals of financial crises, measure risk levels, and provide a stronger basis for analysis.
-\end{itemize}
-The cleaned dataset now consists of 522 entries, 15 features and is ready for statistical analysis.
-
 \chapter{Statistics}
 \section{Descriptive Statistics}
 Descriptive statistics summarize the central tendency and dispersion of the six core features used in this study: 
