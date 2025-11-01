@@ -9,9 +9,6 @@ st.set_page_config(page_title="Flight Delay Demo", layout="centered")
 st.title("✈️ Flight Delay Prediction App")
 st.caption("Demo dự đoán khả năng chuyến bay bị delay")
 
-# ==========================================================
-# 2️⃣ Nhập thông tin chuyến bay
-# ==========================================================
 st.subheader("🛫 Nhập thông tin chuyến bay")
 
 col1, col2 = st.columns(2)
@@ -34,9 +31,7 @@ with col2:
 
 dep_hour = st.slider("Giờ khởi hành (0–23)", 0, 23, 10)
 
-# ==========================================================
-# 3️⃣ Mapping thủ công (giống LabelEncoder cũ)
-# ==========================================================
+
 carrier_map = {
     "AA": 0, "AS": 1, "B6": 2, "DL": 3, "F9": 4, "G4": 5, "HA": 6,
     "MQ": 7, "NK": 8, "OO": 9, "UA": 10, "WN": 11
@@ -58,9 +53,6 @@ dest_map = {
     "SNA": 81, "STL": 82, "STS": 83, "TPA": 84, "TUS": 85
 }
 
-# ==========================================================
-# 4️⃣ Chuẩn bị dữ liệu đầu vào cho mô hình
-# ==========================================================
 input_data = pd.DataFrame({
     "MONTH": [flight_date.month],
     "DAY_OF_MONTH": [flight_date.day],
@@ -78,9 +70,6 @@ input_data = pd.DataFrame({
     "HourlyWindSpeed": [5.0],
 })
 
-# ==========================================================
-# 5️⃣ Dự đoán
-# ==========================================================
 if st.button("🚀 Dự đoán"):
     # kiểm tra hợp lệ
     if -1 in input_data.values:
@@ -96,8 +85,5 @@ if st.button("🚀 Dự đoán"):
     else:
         st.success(f"🕐 Chuyến bay **Không delay**.\nXác suất delay: **{prob:.2%}**")
 
-# ==========================================================
-# 6️⃣ Footer
-# ==========================================================
 st.markdown("---")
 st.caption("Made by Quang, Thanh — Data Science Final Project ✈️")
