@@ -356,9 +356,6 @@ ORIGIN, FL\_DATE, DEP\_HOUR -> STATION, date, hour.}
     \item {The merged dataset contained 50,029 rows and 22 columns.}
 \end{itemize}
 
-\section{Feature Engineering}
-\section{Final Dataset Overview}
-
 \begin{table}[H]
 \centering
 \begin{adjustbox}{width=\textwidth}
@@ -376,398 +373,72 @@ ORIGIN, FL\_DATE, DEP\_HOUR -> STATION, date, hour.}
 \end{adjustbox}
 \caption{Final Dataset}
 \end{table}
-\chapter{Statistics}
-\section{Descriptive Statistics}
-Descriptive statistics summarize the central tendency and dispersion of the six core features used in this study: 
-Monthly Return, Real Return, P/E Ratio, PE10, 12-month Volatility, and Dividend Yield. We compute descriptive statistics for the six core features both at the full-sample level and separately for major crisis periods.  
-This step helps to identify the general characteristics of the S\&P 500 index and related financial metrics before moving into deeper analysis.
 
-\subsection{Full Sample}
+\section{Feature Engineering}
+\section{Final Dataset Overview}
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrrrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Median} & \textbf{Std} & \textbf{Min} & \textbf{25\%} & \textbf{50\%} & \textbf{75\%} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.011 & 0.008 & 0.084 & -0.360 & -0.022 & 0.008 & 0.034 & 0.399 \\
-Real Return      & 0.008 & 0.007 & 0.081 & -0.365 & -0.023 & 0.007 & 0.033 & 0.431 \\
-P/E Ratio        & 21.617 & 19.641 & 13.055 & 6.788 & 15.671 & 19.641 & 23.807 & 123.731 \\
-PE10  & 25.825 & 25.885 & 8.873 & 8.400 & 20.560 & 25.885 & 30.902 & 48.110 \\
-Volatility (12M) & 0.274 & 0.264 & 0.123 & 0.054 & 0.182 & 0.264 & 0.335 & 0.686 \\
-Dividend Yield   & 0.025 & 0.021 & 0.011 & 0.011 & 0.018 & 0.021 & 0.032 & 0.062 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics of the six main features (full sample).}
-\label{tab:desc_stats_core}
-\end{table}
+\chapter{Exploratory Data Analysis}
+\section{Dataset Overview}
+The cleaned dataset consists of 50,372 flight records collected from airports in Washington State (WA) during the second quarter (Q2) of 2023. After preprocessing and merging with hourly weather observations, the dataset contains 17 variables describing flight operations, scheduling information, and weather conditions.
+
+Data quality checks show that:
 \begin{itemize}
-\item As shown in Table~\ref{tab:desc_stats_core}, returns average less than 1\% per month but display high variability, with extremes near --36\% and +40\%. This reflects the high sensitivity of the S\&P 500 to crisis events. 
-
-\item Valuation ratios are elevated on average, with the P/E occasionally spiking above 120, 
-while PE10 remains consistently high around 26. 
-
-\item Volatility averages 27\% annually but rises sharply in crises. By contrast, the dividend yield is relatively stable (mean of 2.5\%), suggesting that its contribution to total returns is modest but steady across time. 
-
-\end{itemize}
-Overall, these descriptive statistics highlight the combination of high return variability, elevated valuations, 
-and episodic volatility spikes that characterize the U.S. equity market over the sample period.
-
-\subsection{Period Analysis}
-To capture structural changes in the U.S. equity market, the sample is divided into four
-periods: 1980–1989, 1990–1999, 2000–2009, and 2010–2023. Each decade reflects distinct
-market conditions shaped by major crises: the 1987 crash in the 1980s, the late-1990s
-dot-com bubble, the dot-com bust (2000–2002) and the Global Financial Crisis (2007–2009) 
-in the 2000s, and the COVID-19 shock (2020) in the 2010s–2020s. This division allows 
-comparison of returns, valuation, volatility, and dividends across both growth phases 
-and crisis episodes.
-
-\begin{itemize}
-\item \textbf{1980--1989}
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.0129 & 0.0799 & -0.1782 & 0.2564 \\
-Real Return      & 0.0080 & 0.0690 & -0.1708 & 0.2054 \\
-P/E Ratio        & 12.0342 & 3.4787 & 6.7882 & 21.4174 \\
-PE10      & 14.3445 & 3.9348 & 8.4000 & 22.8500 \\
-Volatility (12M) & 0.2673 & 0.0584 & 0.1078 & 0.4135 \\
-Dividend Yield   & 0.0420 & 0.0089 & 0.0261 & 0.0624 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics for key features, 1980--1989.}
-\label{tab:desc_1980s}
-\end{table}
-
-\begin{itemize}
-\item Monthly and real returns averaged about 1.3\% and 0.8\% per month, respectively, 
-equivalent to strong annual gains. However, volatility was high, with losses up to --18\% 
-and gains above 25\%.  
-
-\item Valuation remained low compared to later decades (P/E $\approx$ 12, PE10 $\approx$ 14), 
-reflecting relatively cheap equity prices in the 1980s.  
-
-\item Volatility averaged 26--27\% annually, peaking above 40\% during the 1987 market crash.  
-
-\item Dividend yield was the highest of all periods (mean $\approx$ 4.2\%), 
-indicating that dividends played a significant role in total returns.  
+\item{There are no duplicated rows after merging.}
+\item{There are no critical missing values in the key predictors or the target variable.}
 \end{itemize}
 
-Overall, the 1980s combined strong growth and attractive valuations with 
-occasional extreme shocks, most notably the Black Monday crash of 1987.
+The dataset includes 5 categorical features: OP\_UNIQUE\_CARRIER, ORIGIN, ORIGIN\_STATE\_ABR, DEST, and DEST\_STATE\_ABR.
+Among them, there are 12 airlines operating flights from 5 origin airports (all within Washington State) to 86 destination airports across 36 states.
+\section{Target and Feature Distributions}
+\subsection{Target Distributions}
+The target variable DEP\_DEL15 indicates whether a flight experienced a departure delay.
 
-\item \textbf{1990-1999}
+Out of a total of 45,251 flights, about 9,909 were delayed, while 35,342 departed on time or early.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.0148 & 0.0790 & -0.1961 & 0.2806 \\
-Real Return      & 0.0120 & 0.0734 & -0.1806 & 0.2560 \\
-P/E Ratio        & 21.6416 & 5.1534 & 14.2141 & 33.9980 \\
-PE10     & 28.9100 & 8.4463 & 17.5900 & 48.1100 \\
-Volatility (12M) & 0.2685 & 0.1120 & 0.0639 & 0.4903 \\
-Dividend Yield   & 0.0244 & 0.0073 & 0.0117 & 0.0388 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics for key features, 1990--1999.}
-\label{tab:desc_1990s}
-\end{table}
-
-\begin{itemize}
-\item Returns were the strongest among all periods (monthly $\approx$ 1.5\% nominal, 1.2\% real), 
-though volatility remained high with swings from --19.6\% to +28\%.  
-
-\item Valuations expanded sharply (P/E $\approx$ 22, PE10 $\approx$ 29), 
-reflecting the build-up of the dot-com bubble by the late 1990s.  
-
-\item Volatility averaged 27\% and peaked near 49\%, showing episodes of market stress despite the bull run.  
-
-\item Dividend yield declined to around 2.4\%, much lower than the 1980s, 
-as equity prices outpaced dividend growth.  
-  
-\end{itemize}
-Overall, the 1990s combined exceptional equity performance with rising valuations and falling dividends, 
-culminating in the late-decade dot-com bubble.
-
-\item \textbf{2000-2009}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.0037 & 0.1072 & -0.3595 & 0.3985 \\
-Real Return      & 0.0019 & 0.1098 & -0.3648 & 0.4307 \\
-P/E Ratio        & 31.3906 & 22.0868 & 16.6149 & 123.7308 \\
-PE10       & 28.7900 & 7.0770 & 14.5900 & 47.5900 \\
-Volatility (12M) & 0.3178 & 0.1947 & 0.0545 & 0.6856 \\
-Dividend Yield   & 0.0179 & 0.0050 & 0.0111 & 0.0360 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics for key features, 2000--2009.}
-\label{tab:desc_2000s}
-\end{table}
-
-\begin{itemize}
-\item Returns were weak (monthly $\approx$ 0.4\% nominal, 0.2\% real) with large variability, 
-including extreme losses near --36\% and gains above +40\%.  
-
-\item Valuations were elevated and unstable (P/E $\approx$ 31, PE10 $\approx$ 29), 
-with the P/E ratio spiking above 120 during earnings collapses.  
-
-\item Volatility averaged 32\% annually and reached nearly 69\%, the highest among all periods, 
-reflecting the dot-com bust and the Global Financial Crisis.  
-
-\item Dividend yield declined further to about 1.8\%, offering limited income support to investors.  
-\end{itemize}
-Overall, the 2000s were marked by two major crises, producing poor equity returns, extreme volatility, 
-and unstable valuations, often referred to as a “lost decade” for U.S. equities. 
-
-\clearpage
-\item \textbf{2010-2023}
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.0109 & 0.0712 & -0.2029 & 0.2303 \\
-Real Return      & 0.0086 & 0.0686 & -0.2543 & 0.2540 \\
-P/E Ratio        & 21.4586 & 4.7640 & 13.4960 & 39.2575 \\
-PE10       & 29.8483 & 5.0396 & 21.7100 & 42.0500 \\
-Volatility (12M) & 0.2520 & 0.0825 & 0.0845 & 0.4512 \\
-Dividend Yield   & 0.0189 & 0.0022 & 0.0129 & 0.0230 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics for key features, 2010--2023.}
-\label{tab:desc_2010s}
-\end{table}
-
-\begin{itemize}
-\item Returns recovered (monthly $\approx$ 1.1\% nominal, 0.9\% real), close to long-term averages.  
-
-\item Valuations stayed elevated (P/E $\approx$ 21, PE10 $\approx$ 30), reflecting sustained optimism.  
-
-\item Volatility averaged 25\% and spiked above 45\%, notably during the COVID-19 shock in 2020.  
-
-\item Dividend yield remained low (mean $\approx$ 1.9\%), continuing the declining trend from earlier decades.  
- 
-\end{itemize}
-Overall, the 2010s–2020s featured strong post-crisis recovery and high valuations, 
-but with renewed turbulence during global shocks such as COVID-19. 
-
-
-\end{itemize}
-
-\section{Distribution Analysis}
-This section explores the distribution of the six core features using histograms that highlights skewness, fat tails, and outliers.
-\begin{figure}[H]
-    \centering
-    % % Hàng 1
-    % \subfloat[Monthly Return]{\includegraphics[width=0.32\textwidth]{histo_Monthly_Return.png}} \hfill
-    % \subfloat[Real Return]{\includegraphics[width=0.32\textwidth]{histo_Real_Return.png}} \hfill
-    % \subfloat[P/E Ratio]{\includegraphics[width=0.32\textwidth]{histo_PE_Ratio.png}} \\
-
-    % % Hàng 2
-    % \subfloat[PE10]{\includegraphics[width=0.32\textwidth]{histo_PE10.png}} \hfill
-    % \subfloat[Volatility (12M)]{\includegraphics[width=0.32\textwidth]{histo_Volatility_12M.png}} \hfill
-    % \subfloat[Dividend Yield]{\includegraphics[width=0.32\textwidth]{histo_Dividend_Yield.png}}
-
-    \caption{Distributions of the six core features: Monthly Return, Real Return, 
-    P/E Ratio, PE10, Volatility (12M), and Dividend Yield.}
-    \label{fig:dist_all}
-\end{figure}
-
-\begin{itemize}
-\item Monthly and real returns are centered near zero but display fat tails and frequent outliers, 
-indicating the presence of extreme market swings.  
-
-\item Valuation ratios are right-skewed, with P/E showing extreme spikes when earnings collapsed, 
-while PE10 is more stable but still biased toward high values.  
-
-\item Volatility (12M) is positively skewed, with crisis-driven spikes reaching unusually high levels.  
-
-\item Dividend yield shows the narrowest distribution, mostly stable around 2--3\%, 
-with occasional jumps above 5\% during market downturns.  
-
-\end{itemize}
-
-Overall, distributions confirm non-normal behavior in returns, persistent high valuations, 
-crisis-induced volatility, and relatively stable income yields.  
-
-\section{Correlation}
-To examine linear relationships among the six core features, 
-we compute the Pearson correlation matrix and visualize it using a heatmap. 
-This analysis helps identify potential dependencies, overlaps, and contrasts between 
-returns, valuation metrics, volatility, and dividend yield.
-
-\begin{figure}[h!]
-    \centering
-    % \includegraphics[width=0.8\textwidth]{correlation_heatmap.png}
-    \caption{Correlation matrix of the six main features.}
-    \label{fig:corr}
-\end{figure}
-
-\begin{itemize}
-\item Monthly and real returns are almost perfectly correlated ($\rho \approx 0.97$) since real returns are inflation-adjusted versions of nominal returns.  
-
-\item Valuation metrics and dividend yield move in opposite directions: 
-PE10 and dividend yield show a very strong negative correlation ($\rho \approx -0.89$), 
-while P/E ratio and dividend yield also correlate negatively ($\rho \approx -0.35$).  
-
-\item P/E ratio is moderately correlated with volatility ($\rho \approx 0.40$), 
-suggesting that high valuations often coincide with higher market uncertainty.  
-
-\item Other relationships are weak. We can indicate that returns, volatility, and valuations 
-capture largely complementary dimensions of market behavior.  
-  
-\end{itemize}
-Correlations highlight strong overlaps between returns themselves 
-and between valuation and dividend yield, while other features remain relatively independent. 
-
-\section{Hypothesis Testing}
-
-We focus on volatility as a primary measure of market risk. 
-The hypothesis is formulated as:
-
-\begin{itemize}
-    \item $H_0$: Volatility during crisis periods equals volatility during non-crisis periods.  
-    \item $H_1$: Volatility during crisis periods is greater than during non-crisis periods.  
-\end{itemize}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{lcccccc}
-\toprule
- & Count & Mean & Std & Min & Median & Max \\
-\midrule
-Crisis      & 64  & 0.389 & 0.172 & 0.088 & 0.341 & 0.686 \\
-Non-crisis  & 458 & 0.259 & 0.105 & 0.054 & 0.253 & 0.580 \\
-\bottomrule
-\end{tabular}
-\caption{Comparison of 12-month volatility between crisis and non-crisis periods}
-\label{tab:volatility_test}
-\end{table}
-
-
-Using a one-sided Welch’s t-test, we compare the two groups. 
-The descriptive statistics show that average volatility during crises is approximately 0.39 
-with higher dispersion (std $\approx$ 0.17), compared to a mean of 0.26 
-with lower dispersion (std $\approx$ 0.10) in non-crisis periods.  
-The test yields a $t$-statistic of 5.89 with a one-tailed $p$-value $< 0.001$, 
-leading us to reject the null hypothesis.
+This shows a moderate class imbalance, with the majority of flights being on-time.
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{hypothesis_volatility_crisis_vs_noncrisis.png}
-    \caption{Boxplot and histogram of 12-month volatility during crisis and non-crisis periods}
-    \label{fig:hypo}
+    \includegraphics[width=0.4\textwidth]{Img/target_distribution.png}
+    \caption{Flight Delay Distribution}
+    \label{fig:line_sp}
 \end{figure}
+\subsection{Feature Distributions}
+The numerical variables show a mix of skewed and balanced distributions.
 
-\textbf{Conclusion:} Volatility is significantly higher during crises, confirming 
-that financial stress is most clearly reflected in sharp increases in market risk.
+\textbf{Unbalanced features:}
+\begin{itemize}
+    \item CRS\_DEP\_TIME and CRS\_ARR\_TIME have visible peaks during morning and evening hours, reflecting flight scheduling patterns.
+    \item DISTANCE is right-skewed, dominated by short- to mid-range routes but with a few long-haul flights.
+\end{itemize}
 
-\chapter{Visualization}
-To get better insights into S\&P 500 Dataset, several visualization techniques are
-applied. These figures provide an intuitive view of market dynamics and reveal how key indicators behaved under both normal conditions and financial crises
+\textbf{Balanced features:}
+\begin{itemize}
+    \item MONTH, DAY\_OF\_MONTH, and DAY\_OF\_WEEK are evenly distributed, showing consistent flight activity across time.
+    \item Weather-related variables HourlyDryBulbTemperature, HourlyDewPointTemperature, HourlyRelativeHumidity, HourlyWindSpeed display near-normal patterns, indicating stable weather conditions.
+\end{itemize}
 
-\section{Market Performance}
+The categorical features are highly imbalanced.
+
+The variable OP\_UNIQUE\_CARRIER shows that Alaska Airlines (AS) operates the majority of flights, followed by SkyWest (OO) and Delta (DL).
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{line_sp500_crisis_highlight.png}
-    \caption{S\&P 500 Index with Highlighted Crisis Periods (1980–2023)}
+    \includegraphics[width=0.7\textwidth]{Img/OP_UNIQUE_distribution.png}
+    \caption{Airline Distribution}
     \label{fig:line_sp}
 \end{figure}
 
-As shown in Figure~\ref{fig:line_sp}, The S\&P 500 shows strong long-term growth but sharp declines during crises.
-\begin{itemize}
-    \item Black Monday in 1987 produced a sudden sharp decline,
-    \item The dot-com crash (2000–2002) and the Global Financial Crisis (2008) resulted in prolonged downturns.
-    \item The COVID-19 shock triggered an abrupt fall, followed by a rapid rebound.
-\end{itemize}
-These disruptions illustrate how quickly markets can collapse. Crises create extreme stress and challenge assumptions of growth and stability.
+From the ORIGIN variable, most flights in Washington depart from Seattle–Tacoma Airport (SEA), accounting for about 87.41\% of total flights.
 
-\begin{figure}[H]
-    \centering
-    % \includegraphics[width=0.8\textwidth]{line_return_vs_real_2000s.png}
-    \caption{Monthly vs Real Return (2000–2009)}
-    \label{fig:line_re}
-\end{figure}
+The DEST\_STATE\_ABR distribution indicates that most destinations are in California (CA) (around 24.17\%), followed by Washington (WA) and Alaska (AK).
 
-In Figure~\ref{fig:line_re}, both monthly and real returns display high volatility during the 2000–2009 period, which covers the dot-com crash (2000–2002) and the Global Financial Crisis (2008).
-\begin{itemize}
-\item Real returns often drop deeper than nominal returns, especially during crisis years.
-\item Sharp negative spikes in 2000–2002 and 2008 highlight how inflation-adjusted outcomes can be more severe.
-\end{itemize}
-Evaluating performance without accounting for inflation may underestimate the true impact of crises. Therefore, crises challenge assumptions of growth and stability, requiring careful consideration of real returns for investment decisions.
+Overall, flight activity is mainly concentrated among a few major airlines, airports, and destination states.
 
-\section{Valuation Metrics}
-
-\begin{figure}[H]
-    \centering
-    % \includegraphics[width=0.8\textwidth]{scatter_cape_dividend.png}
-    \caption{Scatter Plot: PE10 vs Dividend Yield}
-    \label{fig:scatter_}
-\end{figure}
-
-From Figure~\ref{fig:scatter_}, there is a clear negative relationship between the cyclically adjusted PE10 and dividend yield. We can conclude that when valuations are stretched, the income cushion from dividends diminishes. This directly supports the problem statement that examining PE10 and dividends under stress helps investors assess vulnerabilities and prepare for downturns.
-
-
-\begin{figure}[h!]
-    \centering
-    % \includegraphics[width=0.8\textwidth]{line_pe10.png}
-    \caption{PE10 over time}
-    \label{fig:line_pe10}
-\end{figure}
-
-In Figure~\ref{fig:line_pe10}, the PE10 rises sharply during expansionary phases but then quickly contracts once crises unfold.
-\begin{itemize}
-\item Valuations peaked during the late 1990s dot-com bubble, reaching historically extreme levels ($\approx 48$) before collapsing as the dot-com bubble burst.
-\item It fell again during the Global Financial Crisis, and spiked once more around COVID-19 before adjusting downward.
-\end{itemize}
-Extreme valuations rarely persist and tend to reverse sharply under stress, supporting hat PE ratios can serve as early signals of market vulnerability.
-
-\section{Risk}
-
-\begin{figure}[h!]
-    \centering
-    % \includegraphics[width=0.8\textwidth]{line_volatility_12m.png}
-    \caption{12-Month Volatility over time }
-    \label{fig:line_vol}
-\end{figure}
-
-Figure~\ref{fig:line_vol} shows the 12-month rolling volatility clearly spikes during financial crises.
-\begin{itemize}
-\item Volatility surged during the dot-com crash, reached extreme levels (close to 70\%) in the Global Financial Crisis, and rose again during the COVID-19 shock.
-\item Between crises, volatility gradually declined as markets stabilized, highlighting its cyclical nature.
-\end{itemize}
-These recurring surges demonstrate how crises generate extreme uncertainty, disrupt stability and reinforcing that volatility is a key measure of market stress and risk exposure.
-
-\clearpage
-\section{Dividends}
-
-\begin{figure}[h!]
-    \centering
-    % \includegraphics[width=0.8\textwidth]{line_dividend_yield_highlight.png}
-    \caption{Dividend Yield with Highlighted Crisis Periods (1980–2023) }
-    \label{fig:line_dividend}
-\end{figure}
-
-As shown in Figure~\ref{fig:line_dividend}, the dividend yield shows a long-term declining trend but with noticeable spikes during crises.
-\begin{itemize}
-\item Yields were above 5\% in the early 1980s but steadily declined to near 1\% around the dot-com crash, reflecting elevated valuations and reduced income returns.
-\item During the Global Financial Crisis, yields briefly rebounded above 3\% as stock prices fell sharply.
-\item In the COVID-19 shock, yields rose only modestly, staying below earlier peaks.
-\end{itemize}
-While dividends provide some cushion during downturns, their effectiveness has weakened over time as yields have trended lower. This directly supports the problem statement that analyzing dividends under stress is critical for understanding market resilience and investor income security.
+\section{Bivariate Analysis with Target}
+\subsection{Flight Operation Factors}
+\subsubsection{}
+\section{Correlation and Statistical Tests}
 
 
 \chapter*{Conclusion}
