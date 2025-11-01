@@ -21,9 +21,15 @@
 \usepackage{adjustbox} % trong phần preamble
 \usepackage{multicol}
 \usepackage{indentfirst}
+\usepackage{setspace}
+\usepackage{textcomp} % để dùng ký hiệu độ
+
+
+
+
 
 \pagestyle{fancy}
-\lhead{S\&P 500 Crisis Analysis}
+\lhead{Flight Delay Prediction}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -50,6 +56,7 @@
     tabsize=2
 }
 
+
 \lstset{ % Tùy chỉnh các thuộc tính
     basicstyle=\ttfamily\small, % Kiểu chữ máy tính nhỏ
     backgroundcolor=\color{lightgray}, % Màu nền nhẹ cho code
@@ -65,6 +72,7 @@
     captionpos=b, % Đặt caption ở dưới code
     frame=single, % Đặt khung xung quanh code
 }
+
 
 
 \begin{document}
@@ -98,7 +106,12 @@
 
     % --- Assignment Title ---
     \vspace{0.5cm} % khoảng cách trước Labwork I
-    {\huge \textbf{USA Flight Delay Analysis}}
+    {\huge
+    \begin{spacing}{1.2} % tăng khoảng cách giữa các dòng lên 1.2 lần
+    \textbf{A Data-Driven Approach to Predicting Flight Delays}
+    
+\end{spacing}
+}
     \vspace{1.5cm} % khoảng cách sau Labwork I
 \end{center}
 
@@ -122,7 +135,7 @@
 
 % --- Footer ---
 \begin{center}
-    \textit{Hanoi, Sep 2025}
+    \textit{Hanoi, Oct 2025}
 \end{center}
 \newpage
 \pagenumbering{arabic} 
@@ -152,49 +165,34 @@ Flight delays pose a significant operational and economic challenge for the avia
 \addcontentsline{toc}{chapter}{ABSTRACT}
 
 \chapter{Introduction}
-\section{Business Analysis}
-\subsection{Background}
-Flight delays are a persistent challenge in the aviation industry, leading to significant operational, financial, and customer-service impacts. Even minor delays can cascade across the network, disrupting schedules, increasing costs, and reducing passenger satisfaction. With the expansion of air traffic and the growing influence of external factors such as weather and airport congestion, understanding and predicting flight delays has become an essential task for both airlines and transportation authorities. The integration of data science and machine-learning techniques provides new opportunities to analyze historical data and uncover complex relationships between flight, weather, and operational variables.
+\section{Background}
+Flight delays remain a major challenge in the aviation industry, affecting operational efficiency and passenger satisfaction. With increasing air traffic and weather variability, understanding and predicting delays has become essential for airlines and authorities. The integration of data science enables a deeper analysis of historical patterns and factors influencing flight punctuality.
 
-\subsection{Problem Statement}
-Flight operations are influenced by multiple interacting factors—weather conditions, scheduling patterns, route distances, and airline operations. Traditional statistical approaches often fail to capture the non-linear dependencies and dynamic patterns that drive delay events. This study aims to investigate the key factors contributing to flight departure delays and to develop a data-driven analytical framework that can detect patterns and relationships across diverse datasets. By merging flight performance data with meteorological information, the study seeks to identify major predictors of delay and examine how environmental and temporal factors affect flight punctuality.
-\subsection{Analytical Approach}
-This project employs a data engineering and machine-learning pipeline to process and analyze flight and weather data. Datasets from the Bureau of Transportation Statistics (BTS) and the National Oceanic and Atmospheric Administration (NOAA) were collected, cleaned, and merged through automated data-processing steps. Feature engineering was applied to transform time-based and weather-related variables into model-ready formats. Descriptive statistics, correlation analysis, and visualization techniques were used to explore relationships among variables, while classification algorithms such as Logistic Regression, Random Forest, and LightGBM were implemented to model delay likelihood. Insights derived from these analyses contribute to understanding the determinants of flight delay behavior.
-\subsection{Goals}
-The goal of this study is to build a comprehensive analytical system capable of predicting flight departure delays and identifying their main causes. Specifically, it aims to integrate flight and weather data into a unified dataset, construct machine-learning models to analyze delay patterns, and generate interpretable insights that can support airline operations and scheduling decisions. Through this approach, the project bridges data engineering and data science to enhance the reliability and efficiency of air-transport services.
-\subsection{Implications}
-The outcomes of this analysis can assist airlines, airports, and regulators in improving operational planning and resource allocation. By recognizing weather-related and temporal factors that most strongly affect delay risk, stakeholders can design early-warning systems, optimize flight scheduling, and enhance passenger communication. Moreover, the integration of predictive modeling into decision-support systems demonstrates how data-driven methods can contribute to more resilient and efficient aviation management.
+\section{Problem Statement}
+Flight operations are influenced by multiple interacting factors such as weather, route, schedule, and carrier performance. These factors do not act independently but combine in complex and nonlinear ways, making delay prediction a challenging task.
+
+Traditional methods — such as basic statistical analysis or simple linear regression — mainly capture one-to-one, linear relationships between variables. However, they fail to represent nonlinear interactions among multiple operational and environmental features, limiting their ability to model real-world flight behaviors.
+
+Therefore, this study aims to identify the key determinants of departure delays and to develop data-driven models capable of capturing these complex dependencies.
+
+\section{Analytical Approach}
+The project integrates flight and weather datasets from the Bureau of Transportation Statistics (BTS) and NOAA. After cleaning and merging, a machine-learning pipeline was applied to model departure delays. Techniques such as correlation analysis, feature engineering, and classification algorithms were used to uncover delay patterns.
+
+\section{Goals and Implications}
+The goal of this study is to build a data-driven analytical framework capable of predicting flight departure delays and identifying their main causes. By integrating flight and weather data into a unified dataset, the project applies machine-learning models to uncover delay patterns and key influencing factors. 
+
+The outcomes of this analysis can support airlines and regulators in improving scheduling, resource allocation, and passenger communication. Through data-driven insights, this approach enhances the reliability and efficiency of air transport operations.
+
 
 \chapter{Data Collection and Preparation}
 \section{Introduction}
-This project employs two distinct datasets — one containing flight operation records and another containing hourly weather observations — to support the analysis and prediction of flight departure delays.
-The use of both datasets is essential because flight performance is not only influenced by operational factors such as scheduling and routes, but also by environmental conditions like temperature, wind, and visibility.
-By combining these two perspectives, the study aims to capture a more realistic representation of the factors contributing to flight delays.
-
-Therefore, each dataset was processed and cleaned individually before being merged into a single analytical dataset that serves as the foundation for further exploration and modeling.
+This project uses two complementary datasets: flight operation records and hourly weather observations. Combining operational and environmental data provides a more realistic view of factors influencing flight delays. Each dataset was individually cleaned and then merged into a unified analytical dataset for subsequent analysis and modeling.
 \subsection{Flight Dataset}
-The flight dataset used in this project is the \textbf{Airline On-Time Performance Data}, obtained from the \textbf{U.S. Bureau of Transportation Statistics}, which provides detailed records of domestic flight operations across the United States. It contains information about each scheduled flight, including the airline carrier, origin and destination airports, scheduled and actual departure times,... This dataset serves as the primary source for analyzing operational factors contributing to departure delays.
+The flight dataset used in this project is the \textbf{Airline On-Time Performance Data}, obtained from the \textbf{U.S. Bureau of Transportation Statistics}, which provides detailed records of domestic flight operations across the United States. This dataset serves as the primary source for analyzing operational factors contributing to departure delays.
 
 For this study, only flights departing from Washington State during the second quarter (Q2) were used.
-The dataset consists of 65,374 entries and 17 features, and is provided in CSV (Comma-Separated Values) format.
-\begin{table}[H]
-\centering
-\begin{adjustbox}{width=\textwidth}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\textbf{MONTH} & \textbf{DAY\_OF\_MONTH} & \textbf{OP\_UNIQUE\_CARRIER} & \textbf{ORIGIN} & \textbf{CRS\_ARR\_TIME} & \textbf{DEST} & \textbf{...} & \textbf{DISTANCE} & \textbf{DEP\_DELAY} & \textbf{DEP\_DEL15}\\
-\hline
-4 & 1 & AA & SEA & 9.33 & SEA & ... & 2279.0 & 11.0 & 0\\
-4 & 1 & UA & GEG & 18.12 & LAS & ... & 224.0 & 18.0 & 1\\
-4 & 1 & AS & SEA & 15.32 & BUR & ... & 937.0 & 20.0 & 1\\
-... & ... & ... & ... & ... & ... & ... & ... & ... & ...\\
-6 & 30 & WN & SEA & 22.75 & SMF & ... & 605.0 & -5.0 & 0\\
-6 & 30 & WN & SEA & 16.92 & STL & ... & 1709.0 & 10.0 & 0\\
-\hline
-\end{tabular}
-\end{adjustbox}
-\caption{Airline On-Time Performance Dataset}
-\end{table}
+The dataset consists of 65,374 entries and 17 features, and is provided in CSV format.
+
 The data types and detailed discussion of each feature in the dataset are provided below:
 
 
@@ -244,24 +242,8 @@ DEP\_DELAY\_GROUP & Categorical (Ordinal) & Float & Grouping of departure delay 
 \caption{Features Explanation}
 \end{table}
 \subsection{Weather Dataset}
-The weather dataset used in this project was obtained from the \textbf{National Oceanic and Atmospheric Administration (NOAA)}, which provides historical hourly weather observations recorded at airports across the United States. To ensure consistency with the flight dataset, only data from major airports in Washington State during the second quarter (Q2) were collected. The dataset contains over 50,000 hourly records with many key meteorological, stored in CSV format, with timestamps adjusted to local time zones to enable accurate integration with flight schedules.
-\begin{table}[H]
-\centering
-\begin{adjustbox}{width=\textwidth}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\textbf{STATION} & \textbf{DATE} & \textbf{HourlyDewPointTemperature} & \textbf{HourlyDryBulbTemperature} & \textbf{HourlyRelativeHumidity} & \textbf{HourlyVisibility} & \textbf{HourlyWindSpeed}\\
-\hline
-72784524163 & 2025-04-01T00:53:00 & 35 & 41 & 79 & 10 & 10\\
-72784524163 & 2025-04-01T01:53:00 & 34 & 41 & 76 & 10 & 0\\
-... & ... & ... & ... & ... & ... & ...\\
-72793724222 & 2025-06-30T23:53:00 & 51 & 64 & 63 & 10 & 3\\
-72793724222 & 2025-06-30T18:53:00 & 52 & 69 & 55 & 10 & 9\\
-\hline
-\end{tabular}
-\end{adjustbox}
-\caption{NOAA Dataset}
-\end{table}
+The weather dataset used in this project was obtained from the \textbf{National Oceanic and Atmospheric Administration (NOAA)}, which provides historical hourly weather observations recorded at airports across the United States. To ensure consistency with the flight dataset, only data from major airports in Washington State during the second quarter (Q2) were collected. The dataset contains over 50,000 hourly records with many key meteorological, stored in CSV format.
+
 The data types and detailed discussion of each feature in the dataset are provided below:
 \begin{table}[H]
 \centering
@@ -288,73 +270,82 @@ HourlyWindSpeed & Quantitative & Float & Average wind speed during the hour (mil
 \end{table}
 
 \section{Data Preparation and Cleaning}
-\subsection{Flight Data Cleaning and Preprocessing}
-To ensure the data is suitable for analysis and modeling, several preprocessing steps were performed:\\
-\textbf{Filtering by origin state:}
+\subsection*{Flight Data Cleaning and Preprocessing}
+
+To ensure the data is suitable for analysis and modeling, several preprocessing steps were performed:
+
 \begin{itemize}
-\item{Kept only flights with ORIGIN\_STATE\_ABR = 'WA', since the state has five main airports, which simplifies the merging process with weather data.}
-\item {After this step, a total of 50372 flights departing from WA during Q2 were recorded.}
+    \item \textbf{Filtering by Origin State:}
+    \begin{itemize}
+        \item Kept only flights with \texttt{ORIGIN\_STATE\_ABR = 'WA'}, since the state has five main airports, which simplifies merging with weather data.
+    \end{itemize}
+
+    \item \textbf{Handling Missing and Duplicate Records:}
+    \begin{itemize}
+        \item Removed all rows with missing or zero values, except for time-related variables (\texttt{DEP\_DELAY}, \texttt{DEP\_DEL15}, \texttt{DEP\_DELAY\_GROUP}, \texttt{DEP\_DELAY\_NEW}).
+        \item Identified and removed duplicate records.
+    \end{itemize}
+
+    \item \textbf{Removing Cancelled Flights:}
+    \begin{itemize}
+        \item Filtered out all cancelled flights (\texttt{CANCELLED = 1}) to focus on actual departure delays and removed \texttt{CANCELLED} column.
+    \end{itemize}
+
+    \item \textbf{Time Transformation:}
+    \begin{itemize}
+        \item Converted \texttt{CRS\_DEP\_TIME} and \texttt{CRS\_ARR\_TIME} from HHMM to decimal-hour format.
+    \end{itemize}
+
+    \item \textbf{General Summary:}
+    \begin{itemize}
+        \item After preprocessing, the dataset contains 17 features and 50,186 samples.
+        \item The dataset is ready for merging and analysis.
+    \end{itemize}
 \end{itemize}
-\textbf{Handling Missing and Duplicate Records:}
-\begin{itemize}
-    \item{Removed all rows with missing or zero values, except for time-related variables (DEP\_DELAY, DEP\_DEL15, DEP\_DELAY\_GROUP, DEP\_DELAY\_NEW).}
-    \item{Duplicate records were identified and removed to maintain data integrity.}
-\end{itemize}
-\textbf{Remove cancelled flight:}
-\begin{itemize}
-\item{Filtered out all cancelled flights (CANCELLED = 1) to focus on actual departure delays.}
-\item {Remove CANCELLED column.}
-\end{itemize}
-\textbf{Feature Engineering:}
-\begin{itemize}
-    \item{CRS\_DEP\_TIME and CRS\_ARR\_TIME were converted from HHMM to decimal-hour format.}
-    \item {New feature ORIGIN-DEST was created to represent flight routes for better analytical insight.}
-\end{itemize}
-\textbf{General:}
-\begin{itemize}
-    \item{After prepareing, dataset have 17 features and 50186 samples.}
-    \item {Dataset is ready for merging and analysis.}
-\end{itemize}
+
 \subsection{Weather Data Cleaning and Preprocessing}
-The weather dataset was cleaned and standardized to ensure accuracy and consistency before merging with the flight data
-\textbf{Handling Missing and Duplicate Records:}
+The weather dataset was cleaned and standardized to ensure accuracy and consistency before merging with the flight data.
 \begin{itemize}
-    \item{Removed records containing NULL values.}
-    \item{Duplicate records were identified and removed.}
-\end{itemize}
-\textbf{Extract new features:}
-\begin{itemize}
-    \item{Converted the DATE column to datetime format to enable time-based operations and ensure consistent timestamp handling.}
-    \item {Extracted the day and month information into a new column date, formatted as “MM-DD” for easier temporal alignment.}
-    \item {Extracted the hour component into a new column hour, which was later used to merge weather data with flight departure times.}
-\end{itemize}
-\textbf{Map airport codes:}
-\begin{itemize}
-    \item{The STATION codes were mapped from NOAA station IDs to corresponding airport IATA codes to ensure consistency with the flight dataset during merging.}
-\end{itemize}
-\textbf{General:}
-\begin{itemize}
-    \item{After prepareing, dataset have 8 features and 10851 samples.}
-    \item {Dataset is ready for merging and analysis.}
+    \item \textbf{Handling Missing and Duplicate Records:}
+    \begin{itemize}
+        \item{Removed records containing NULL values.}
+        \item{Duplicate records were identified and removed.}
+    \end{itemize}
+    \item \textbf{Extract new features:}
+    \begin{itemize}
+        \item{Converted the \texttt{DATE} column to datetime format.}
+        \item {Extracted the day and month information into a new column date, formatted as “MM-DD” for easier temporal alignment.}
+        \item {Extracted the hour component into a new column hour.}
+    \end{itemize}
+    \item \textbf{Map airport codes:}
+    \begin{itemize}
+        \item{The \texttt{STATION} codes were mapped from NOAA station IDs to corresponding airport IATA codes to ensure consistency with the flight dataset during merging.}
+    \end{itemize}
+    \item \textbf{General:}
+    \begin{itemize}
+        \item{After prepareing, dataset have 8 features and 10851 samples.}
+        \item {Dataset is ready for merging and analysis.}
+    \end{itemize}
 \end{itemize}
 \subsection{Merging Datasets}
 After cleaning and preprocessing both datasets, they were merged to create a comprehensive dataset for analysis:
+\begin{itemize}
+    \item \textbf{Prepare Time Columns:}
+    \begin{itemize}
+        \item{Extracted the departure hour (\texttt{DEP\_HOUR}) from \texttt{CRS\_DEP\_TIME} by flooring the scheduled time to the nearest hour.}
+        \item {Created a new column \texttt{FL\_DATE} by combining \texttt{MONTH} and \texttt{DAY\_OF\_MONTH}, with the year temporarily set to 2025.}
+        \item {In the weather dataset, added the year “2025” to the date column (if missing) and converted it to datetime format.}
+        \item {These transformations standardized date and time formats across both datasets, enabling accurate merging by hour and location.}
+    \end{itemize}
+    \item \textbf{Merge Flight \& Weather Data}
+    \begin{itemize}
+        \item{Merged flight and weather datasets using a left join on matching keys:
+    \texttt{ORIGIN, FL\_DATE, DEP\_HOUR} $\rightarrow$ \texttt{STATION, date, hour}.}
+        \item{Ensured each flight matched its corresponding hourly weather record.}
+        \item {Removed intermediate columns that were no longer needed: ["\texttt{DEP\_HOUR}", "\texttt{FL\_DATE}", "\texttt{STATION}", "\texttt{date}", "\texttt{hour}"].}
+    \end{itemize}
+\end{itemize}
 
-\textbf{Prepare Time Columns:}
-\begin{itemize}
-    \item{Extracted the departure hour (DEP\_HOUR) from CRS\_DEP\_TIME by flooring the scheduled time to the nearest hour.}
-    \item {Created a new column FL\_DATE by combining MONTH and DAY\_OF\_MONTH, with the year temporarily set to 2025.}
-    \item {In the weather dataset, added the year “2025” to the date column (if missing) and converted it to datetime format.}
-    \item {These transformations standardized date and time formats across both datasets, enabling accurate merging by hour and location.}
-\end{itemize}
-\textbf{Merge Flight \& Weather Data}
-\begin{itemize}
-    \item{Merged flight and weather datasets using a left join on matching keys:
-ORIGIN, FL\_DATE, DEP\_HOUR -> STATION, date, hour.}
-    \item{Ensured each flight matched its corresponding hourly weather record.}
-    \item {Removed intermediate columns that were no longer needed: ["DEP\_HOUR", "FL\_DATE", "STATION", "date", "hour"].}
-    \item {The merged dataset contained 50,029 rows and 22 columns.}
-\end{itemize}
 \begin{table}[H]
 \centering
 \begin{adjustbox}{width=\textwidth}
@@ -372,477 +363,430 @@ ORIGIN, FL\_DATE, DEP\_HOUR -> STATION, date, hour.}
 \end{adjustbox}
 \caption{Final Dataset}
 \end{table}
-\section{Overall Architecture}
-\begin{figure}[H]
-    \centering
-    % \includegraphics[width=\linewidth]{DE_pipeline.jpg}
-    \caption{Data Pipeline Architecture}
-\end{figure}
-The Data Engineering pipeline is designed to ingest, manage, and prepare stock market data in a scalable and reliable manner. The main components are:
-\begin{itemize}
-    \item \textbf{Producer:} Reads the dataset and simulates streaming events, sending them into Kafka topics.
-    \item \textbf{Kafka:} Acts as the messaging and streaming platform, ensuring reliable delivery of data between producer and consumer.
-    \item \textbf{Consumer:} Retrieves data from Kafka topics and writes it into Amazon S3.
-    \item \textbf{Amazon S3:} Serves as the data lake, storing raw data for further processing.
-    \item \textbf{AWS Glue + Crawler:} Manages metadata, automatically detects schema, and organizes the data catalog.
-    \item \textbf{Amazon Athena:} Provides SQL-based querying directly on data stored in S3, enabling cleaning, transformation, and analysis.
-\end{itemize}
 
-\section{Data Collection}
-Data collection in this project is designed to simulate both batch ingestion and real-time streaming of stock market data:
-\begin{itemize}
-    \item \textbf{Batch Data (CSV):} The historical S\&P 500 dataset, is ingested into the pipeline.
-    \item \textbf{Streaming Data (Producer Simulation):} Simulates real-time stock market data by reading a static CSV file line by line and sending each record into Kafka topics using Python. Instead of loading the entire dataset at once, the script publishes records sequentially with a small delay.
-    \item \textbf{Kafka as Ingestion Layer:} Takes the simulated records from the producer, stores them reliably with replication, and distributes so that multiple consumers can process the stream in parallel.
-    \item \textbf{Consumer to Storage:} A Kafka consumer continuously listens to the topic and writes incoming records into Amazon S3 for long-term storage.
-\end{itemize}
-This setup allows the dataset to be treated not only as static batch data but also as dynamic streaming data, reflecting the real-time nature of stock market information.
-
-
-\section{Data Management}
-Once collected, the data is stored, organized, and made accessible through cloud-based services to ensure reliability and scalability:
-\begin{itemize}
-    \item \textbf{Amazon S3 (Data Lake):} Acts as the primary storage for raw data ingested from Kafka. The data can later be structured into different layers such as raw and processed for better organization.
-    \item \textbf{AWS Glue + Crawler:} Automatically detects the schema of the stored data and creates a centralized Data Catalog. This enables consistent metadata management, making the dataset queryable without manual schema definitions.
-    \item \textbf{Amazon Athena:} Provides SQL-based querying directly on top of S3 data. Through Athena, the dataset can be cleaned, filtered, and enriched with additional calculated metrics (e.g., Monthly Return, Dividend Yield).
-\end{itemize}
-This data management setup ensures that the dataset is not only properly stored but also well-structured and accessible. It transforms the raw financial data into an organized and queryable form, ready for downstream analysis and visualization.
-\section{Data Processing}
-After ingestion, all streaming records were stored in \textbf{Amazon S3} and made queryable through \textbf{Amazon Athena}. This allowed the dataset to be accessed with SQL queries for filtering, cleaning, and transforming the raw data before analysis. The processing workflow included the following steps:
-\begin{itemize}
-    \item \textbf{Data Cleaning:}
-    \begin{itemize}
-        \item \textit{Time Range Filtering:} The dataset originally spanned 1871–2023, but per business requirements only 1980–2023 was retained, so earlier records were dropped.
-        \item \textit{Null, Zero, and Duplicate Filtering:} Removed records containing NULL values, excluded entries with zero values in key financial indicators (e.g., earnings or price), and eliminated duplicate records to ensure data integrity and consistency.
-    \end{itemize}
-
-    \item \textbf{Derived Features:} Several new metrics were created, including:
-    \begin{itemize}
-        \item \textit{Monthly Return} = \(\dfrac{SP500 - Previous\_SP500}{Previous\_SP500}\)
-        \item \textit{Dividend Yield} = \(\dfrac{Dividend}{SP500}\)
-        \item \textit{P/E Ratio} = \(\dfrac{SP500}{Earnings}\)
-        \item \textit{Real Return} = \(\dfrac{Real\ Price - Previous\ Real\ Price}{Previous\ Real\ Price}\)
-        \item \textit{Volatility (12M)} = \(StdDev(\text{Monthly Return over 12 months}) \times \sqrt{12}\)
-    \end{itemize}
-    \textbf{Purpose:} Through feature engineering, we created new variables that provided insights into statistical patterns, highlight signals of financial crises, measure risk levels, and provide a stronger basis for analysis.
-\end{itemize}
-The cleaned dataset now consists of 522 entries, 15 features and is ready for statistical analysis.
-
-\chapter{Statistics}
-\section{Descriptive Statistics}
-Descriptive statistics summarize the central tendency and dispersion of the six core features used in this study: 
-Monthly Return, Real Return, P/E Ratio, PE10, 12-month Volatility, and Dividend Yield. We compute descriptive statistics for the six core features both at the full-sample level and separately for major crisis periods.  
-This step helps to identify the general characteristics of the S\&P 500 index and related financial metrics before moving into deeper analysis.
-
-\subsection{Full Sample}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrrrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Median} & \textbf{Std} & \textbf{Min} & \textbf{25\%} & \textbf{50\%} & \textbf{75\%} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.011 & 0.008 & 0.084 & -0.360 & -0.022 & 0.008 & 0.034 & 0.399 \\
-Real Return      & 0.008 & 0.007 & 0.081 & -0.365 & -0.023 & 0.007 & 0.033 & 0.431 \\
-P/E Ratio        & 21.617 & 19.641 & 13.055 & 6.788 & 15.671 & 19.641 & 23.807 & 123.731 \\
-PE10  & 25.825 & 25.885 & 8.873 & 8.400 & 20.560 & 25.885 & 30.902 & 48.110 \\
-Volatility (12M) & 0.274 & 0.264 & 0.123 & 0.054 & 0.182 & 0.264 & 0.335 & 0.686 \\
-Dividend Yield   & 0.025 & 0.021 & 0.011 & 0.011 & 0.018 & 0.021 & 0.032 & 0.062 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics of the six main features (full sample).}
-\label{tab:desc_stats_core}
-\end{table}
-\begin{itemize}
-\item As shown in Table~\ref{tab:desc_stats_core}, returns average less than 1\% per month but display high variability, with extremes near --36\% and +40\%. This reflects the high sensitivity of the S\&P 500 to crisis events. 
-
-\item Valuation ratios are elevated on average, with the P/E occasionally spiking above 120, 
-while PE10 remains consistently high around 26. 
-
-\item Volatility averages 27\% annually but rises sharply in crises. By contrast, the dividend yield is relatively stable (mean of 2.5\%), suggesting that its contribution to total returns is modest but steady across time. 
-
-\end{itemize}
-Overall, these descriptive statistics highlight the combination of high return variability, elevated valuations, 
-and episodic volatility spikes that characterize the U.S. equity market over the sample period.
-
-\subsection{Period Analysis}
-To capture structural changes in the U.S. equity market, the sample is divided into four
-periods: 1980–1989, 1990–1999, 2000–2009, and 2010–2023. Each decade reflects distinct
-market conditions shaped by major crises: the 1987 crash in the 1980s, the late-1990s
-dot-com bubble, the dot-com bust (2000–2002) and the Global Financial Crisis (2007–2009) 
-in the 2000s, and the COVID-19 shock (2020) in the 2010s–2020s. This division allows 
-comparison of returns, valuation, volatility, and dividends across both growth phases 
-and crisis episodes.
+\section{Feature Engineering}
+Feature engineering introduced additional variables designed to represent key temporal, operational, and environmental patterns affecting flight delays.
 
 \begin{itemize}
-\item \textbf{1980--1989}
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.0129 & 0.0799 & -0.1782 & 0.2564 \\
-Real Return      & 0.0080 & 0.0690 & -0.1708 & 0.2054 \\
-P/E Ratio        & 12.0342 & 3.4787 & 6.7882 & 21.4174 \\
-PE10      & 14.3445 & 3.9348 & 8.4000 & 22.8500 \\
-Volatility (12M) & 0.2673 & 0.0584 & 0.1078 & 0.4135 \\
-Dividend Yield   & 0.0420 & 0.0089 & 0.0261 & 0.0624 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics for key features, 1980--1989.}
-\label{tab:desc_1980s}
-\end{table}
-
-\begin{itemize}
-\item Monthly and real returns averaged about 1.3\% and 0.8\% per month, respectively, 
-equivalent to strong annual gains. However, volatility was high, with losses up to --18\% 
-and gains above 25\%.  
-
-\item Valuation remained low compared to later decades (P/E $\approx$ 12, PE10 $\approx$ 14), 
-reflecting relatively cheap equity prices in the 1980s.  
-
-\item Volatility averaged 26--27\% annually, peaking above 40\% during the 1987 market crash.  
-
-\item Dividend yield was the highest of all periods (mean $\approx$ 4.2\%), 
-indicating that dividends played a significant role in total returns.  
-\end{itemize}
-
-Overall, the 1980s combined strong growth and attractive valuations with 
-occasional extreme shocks, most notably the Black Monday crash of 1987.
-
-\item \textbf{1990-1999}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.0148 & 0.0790 & -0.1961 & 0.2806 \\
-Real Return      & 0.0120 & 0.0734 & -0.1806 & 0.2560 \\
-P/E Ratio        & 21.6416 & 5.1534 & 14.2141 & 33.9980 \\
-PE10     & 28.9100 & 8.4463 & 17.5900 & 48.1100 \\
-Volatility (12M) & 0.2685 & 0.1120 & 0.0639 & 0.4903 \\
-Dividend Yield   & 0.0244 & 0.0073 & 0.0117 & 0.0388 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics for key features, 1990--1999.}
-\label{tab:desc_1990s}
-\end{table}
-
-\begin{itemize}
-\item Returns were the strongest among all periods (monthly $\approx$ 1.5\% nominal, 1.2\% real), 
-though volatility remained high with swings from --19.6\% to +28\%.  
-
-\item Valuations expanded sharply (P/E $\approx$ 22, PE10 $\approx$ 29), 
-reflecting the build-up of the dot-com bubble by the late 1990s.  
-
-\item Volatility averaged 27\% and peaked near 49\%, showing episodes of market stress despite the bull run.  
-
-\item Dividend yield declined to around 2.4\%, much lower than the 1980s, 
-as equity prices outpaced dividend growth.  
-  
-\end{itemize}
-Overall, the 1990s combined exceptional equity performance with rising valuations and falling dividends, 
-culminating in the late-decade dot-com bubble.
-
-\item \textbf{2000-2009}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.0037 & 0.1072 & -0.3595 & 0.3985 \\
-Real Return      & 0.0019 & 0.1098 & -0.3648 & 0.4307 \\
-P/E Ratio        & 31.3906 & 22.0868 & 16.6149 & 123.7308 \\
-PE10       & 28.7900 & 7.0770 & 14.5900 & 47.5900 \\
-Volatility (12M) & 0.3178 & 0.1947 & 0.0545 & 0.6856 \\
-Dividend Yield   & 0.0179 & 0.0050 & 0.0111 & 0.0360 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics for key features, 2000--2009.}
-\label{tab:desc_2000s}
-\end{table}
-
-\begin{itemize}
-\item Returns were weak (monthly $\approx$ 0.4\% nominal, 0.2\% real) with large variability, 
-including extreme losses near --36\% and gains above +40\%.  
-
-\item Valuations were elevated and unstable (P/E $\approx$ 31, PE10 $\approx$ 29), 
-with the P/E ratio spiking above 120 during earnings collapses.  
-
-\item Volatility averaged 32\% annually and reached nearly 69\%, the highest among all periods, 
-reflecting the dot-com bust and the Global Financial Crisis.  
-
-\item Dividend yield declined further to about 1.8\%, offering limited income support to investors.  
-\end{itemize}
-Overall, the 2000s were marked by two major crises, producing poor equity returns, extreme volatility, 
-and unstable valuations, often referred to as a “lost decade” for U.S. equities. 
-
-\clearpage
-\item \textbf{2010-2023}
-\begin{table}[h!]
-\centering
-\begin{tabular}{lrrrr}
-\toprule
-\textbf{Feature} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
-\midrule
-Monthly Return   & 0.0109 & 0.0712 & -0.2029 & 0.2303 \\
-Real Return      & 0.0086 & 0.0686 & -0.2543 & 0.2540 \\
-P/E Ratio        & 21.4586 & 4.7640 & 13.4960 & 39.2575 \\
-PE10       & 29.8483 & 5.0396 & 21.7100 & 42.0500 \\
-Volatility (12M) & 0.2520 & 0.0825 & 0.0845 & 0.4512 \\
-Dividend Yield   & 0.0189 & 0.0022 & 0.0129 & 0.0230 \\
-\bottomrule
-\end{tabular}
-\caption{Descriptive statistics for key features, 2010--2023.}
-\label{tab:desc_2010s}
-\end{table}
-
-\begin{itemize}
-\item Returns recovered (monthly $\approx$ 1.1\% nominal, 0.9\% real), close to long-term averages.  
-
-\item Valuations stayed elevated (P/E $\approx$ 21, PE10 $\approx$ 30), reflecting sustained optimism.  
-
-\item Volatility averaged 25\% and spiked above 45\%, notably during the COVID-19 shock in 2020.  
-
-\item Dividend yield remained low (mean $\approx$ 1.9\%), continuing the declining trend from earlier decades.  
- 
-\end{itemize}
-Overall, the 2010s–2020s featured strong post-crisis recovery and high valuations, 
-but with renewed turbulence during global shocks such as COVID-19. 
-
+\item \textbf{Temporal and Cyclical Features:} 
+Time-related attributes (\texttt{MONTH}, \texttt{DAY\_OF\_WEEK}, \texttt{CRS\_DEP\_TIME}) were extracted to capture temporal trends in flight delays. 
+Because time is cyclical (e.g., 23:00 is close to 00:00), sine and cosine transformations were applied to preserve this periodicity:
+\[
+hour\_sin = \sin\left(\frac{2\pi \times hour}{24}\right), \quad
+hour\_cos = \cos\left(\frac{2\pi \times hour}{24}\right)
+\]
+Similarly, \texttt{MONTH} and \texttt{DAY\_OF\_WEEK} were encoded to reflect seasonal and weekly patterns:
+\[
+month\_sin = \sin\left(\frac{2\pi \times month}{12}\right), \quad
+dayofweek\_cos = \cos\left(\frac{2\pi \times day\_of\_week}{7}\right)
+\]
+This encoding helps the model learn periodic delay patterns and maintains the continuity of time.
+\item \textbf{Route Feature:} 
+A new feature \texttt{ROUTE} was created by combining \texttt{ORIGIN} and \texttt{DEST} to represent each flight path. 
+\item \textbf{Time-of-Day Feature:} 
+A categorical variable \texttt{TIME\_OF\_DAY} was created from \texttt{CRS\_DEP\_TIME}, dividing flights into four periods: \textit{morning\_peak}, \textit{midday}, \textit{evening\_peak}, and \textit{night}. 
 
 \end{itemize}
 
-\section{Distribution Analysis}
-This section explores the distribution of the six core features using histograms that highlights skewness, fat tails, and outliers.
-\begin{figure}[H]
-    \centering
-    % % Hàng 1
-    % \subfloat[Monthly Return]{\includegraphics[width=0.32\textwidth]{histo_Monthly_Return.png}} \hfill
-    % \subfloat[Real Return]{\includegraphics[width=0.32\textwidth]{histo_Real_Return.png}} \hfill
-    % \subfloat[P/E Ratio]{\includegraphics[width=0.32\textwidth]{histo_PE_Ratio.png}} \\
 
-    % % Hàng 2
-    % \subfloat[PE10]{\includegraphics[width=0.32\textwidth]{histo_PE10.png}} \hfill
-    % \subfloat[Volatility (12M)]{\includegraphics[width=0.32\textwidth]{histo_Volatility_12M.png}} \hfill
-    % \subfloat[Dividend Yield]{\includegraphics[width=0.32\textwidth]{histo_Dividend_Yield.png}}
+\chapter{Exploratory Data Analysis}
+\section{Dataset Overview}
 
-    \caption{Distributions of the six core features: Monthly Return, Real Return, 
-    P/E Ratio, PE10, Volatility (12M), and Dividend Yield.}
-    \label{fig:dist_all}
-\end{figure}
+The cleaned dataset comprises 45251 flight records collected from airports in Washington State (WA) during the second quarter of 2025. 
+After preprocessing and merging with hourly weather observations, the final dataset contains 22 variables representing flight operations, scheduling details, and meteorological conditions.
 
+\textbf{Data quality checks} confirm that:
 \begin{itemize}
-\item Monthly and real returns are centered near zero but display fat tails and frequent outliers, 
-indicating the presence of extreme market swings.  
-
-\item Valuation ratios are right-skewed, with P/E showing extreme spikes when earnings collapsed, 
-while PE10 is more stable but still biased toward high values.  
-
-\item Volatility (12M) is positively skewed, with crisis-driven spikes reaching unusually high levels.  
-
-\item Dividend yield shows the narrowest distribution, mostly stable around 2--3\%, 
-with occasional jumps above 5\% during market downturns.  
-
+    \item No duplicated rows remain after merging.
+    \item No critical missing values exist in either the key predictors or the target variable.
 \end{itemize}
 
-Overall, distributions confirm non-normal behavior in returns, persistent high valuations, 
-crisis-induced volatility, and relatively stable income yields.  
+The dataset includes five categorical features: \texttt{OP\_UNIQUE\_CARRIER}, \texttt{ORIGIN}, \texttt{ORIGIN\_STATE\_ABR}, \texttt{DEST}, and \texttt{DEST\_STATE\_ABR}. 
+Among them, 12 airlines operate flights from 5 origin airports (all within Washington State) to 86 destination airports across 36 states.
+\section{Target and Feature Distributions}
+\subsection{Target Distributions}
+The target variable \texttt{DEP\_DEL15} indicates whether a flight experienced a departure delay. Out of a total of 45,251 flights, about 9,909 were delayed, while 35,342 departed on time or early.
 
-\section{Correlation}
-To examine linear relationships among the six core features, 
-we compute the Pearson correlation matrix and visualize it using a heatmap. 
-This analysis helps identify potential dependencies, overlaps, and contrasts between 
-returns, valuation metrics, volatility, and dividend yield.
-
-\begin{figure}[h!]
-    \centering
-    % \includegraphics[width=0.8\textwidth]{correlation_heatmap.png}
-    \caption{Correlation matrix of the six main features.}
-    \label{fig:corr}
-\end{figure}
-
-\begin{itemize}
-\item Monthly and real returns are almost perfectly correlated ($\rho \approx 0.97$) since real returns are inflation-adjusted versions of nominal returns.  
-
-\item Valuation metrics and dividend yield move in opposite directions: 
-PE10 and dividend yield show a very strong negative correlation ($\rho \approx -0.89$), 
-while P/E ratio and dividend yield also correlate negatively ($\rho \approx -0.35$).  
-
-\item P/E ratio is moderately correlated with volatility ($\rho \approx 0.40$), 
-suggesting that high valuations often coincide with higher market uncertainty.  
-
-\item Other relationships are weak. We can indicate that returns, volatility, and valuations 
-capture largely complementary dimensions of market behavior.  
-  
-\end{itemize}
-Correlations highlight strong overlaps between returns themselves 
-and between valuation and dividend yield, while other features remain relatively independent. 
-
-\section{Hypothesis Testing}
-
-We focus on volatility as a primary measure of market risk. 
-The hypothesis is formulated as:
-
-\begin{itemize}
-    \item $H_0$: Volatility during crisis periods equals volatility during non-crisis periods.  
-    \item $H_1$: Volatility during crisis periods is greater than during non-crisis periods.  
-\end{itemize}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{lcccccc}
-\toprule
- & Count & Mean & Std & Min & Median & Max \\
-\midrule
-Crisis      & 64  & 0.389 & 0.172 & 0.088 & 0.341 & 0.686 \\
-Non-crisis  & 458 & 0.259 & 0.105 & 0.054 & 0.253 & 0.580 \\
-\bottomrule
-\end{tabular}
-\caption{Comparison of 12-month volatility between crisis and non-crisis periods}
-\label{tab:volatility_test}
-\end{table}
-
-
-Using a one-sided Welch’s t-test, we compare the two groups. 
-The descriptive statistics show that average volatility during crises is approximately 0.39 
-with higher dispersion (std $\approx$ 0.17), compared to a mean of 0.26 
-with lower dispersion (std $\approx$ 0.10) in non-crisis periods.  
-The test yields a $t$-statistic of 5.89 with a one-tailed $p$-value $< 0.001$, 
-leading us to reject the null hypothesis.
+This shows a moderate class imbalance, with the majority of flights being on-time.
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{hypothesis_volatility_crisis_vs_noncrisis.png}
-    \caption{Boxplot and histogram of 12-month volatility during crisis and non-crisis periods}
-    \label{fig:hypo}
+    \includegraphics[width=0.4\textwidth]{Img/target_distribution.png}
+    \caption{Flight Delay Distribution}
+    \label{fig:line_sp}
 \end{figure}
+\subsection{Feature Distributions}
+The numerical variables show a mix of skewed and balanced distributions.
+\begin{itemize}
+\item \textbf{Unbalanced features:}
+\begin{itemize}
+    \item \texttt{CRS\_DEP\_TIME} and \texttt{CRS\_ARR\_TIME} have visible peaks during morning and evening hours, reflecting flight scheduling patterns.
+    \item \texttt{DISTANCE} is right-skewed, dominated by short- to mid-range routes but with a few long-haul flights.
+\end{itemize}
 
-\textbf{Conclusion:} Volatility is significantly higher during crises, confirming 
-that financial stress is most clearly reflected in sharp increases in market risk.
+\item \textbf{Balanced features:}
+\begin{itemize}
+    \item \texttt{MONTH}, \texttt{DAY\_OF\_MONTH}, and \texttt{DAY\_OF\_WEEK} are evenly distributed, showing consistent flight activity across time.
+    \item Weather-related variables \texttt{HourlyDryBulbTemperature, HourlyDewPointTemperature, HourlyRelativeHumidity, HourlyWindSpeed} display near-normal patterns, indicating stable weather conditions.
+\end{itemize}
+\end{itemize}
 
-\chapter{Visualization}
-To get better insights into S\&P 500 Dataset, several visualization techniques are
-applied. These figures provide an intuitive view of market dynamics and reveal how key indicators behaved under both normal conditions and financial crises
-
-\section{Market Performance}
+The categorical features are highly imbalanced.
+\begin{itemize}
+\item The variable \texttt{OP\_UNIQUE\_CARRIER} shows that Alaska Airlines (AS) operates the majority of flights, followed by SkyWest (OO) and Delta (DL).
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{line_sp500_crisis_highlight.png}
-    \caption{S\&P 500 Index with Highlighted Crisis Periods (1980–2023)}
+    \includegraphics[width=0.7\textwidth]{Img/OP_UNIQUE_distribution.png}
+    \caption{Airline Distribution}
     \label{fig:line_sp}
 \end{figure}
 
-As shown in Figure~\ref{fig:line_sp}, The S\&P 500 shows strong long-term growth but sharp declines during crises.
-\begin{itemize}
-    \item Black Monday in 1987 produced a sudden sharp decline,
-    \item The dot-com crash (2000–2002) and the Global Financial Crisis (2008) resulted in prolonged downturns.
-    \item The COVID-19 shock triggered an abrupt fall, followed by a rapid rebound.
+\item From the \texttt{ORIGIN} variable, most flights in Washington depart from Seattle–Tacoma Airport (SEA), accounting for about 87.41\% of total flights.
+
+\item The \texttt{DEST\_STATE\_ABR} distribution indicates that most destinations are in California (CA) (around 24.17\%), followed by Washington (WA) and Alaska (AK).
 \end{itemize}
-These disruptions illustrate how quickly markets can collapse. Crises create extreme stress and challenge assumptions of growth and stability.
+Overall, flight activity is mainly concentrated among a few major airlines, airports, and destination states.
+
+\section{Bivariate Analysis}
+Following the univariate exploration of both target and feature variables, this section extends the analysis to examine how these factors interact with flight delay outcomes. The bivariate investigation provides insights into how operational, temporal, and environmental conditions are associated with the likelihood of delays, offering a clearer picture of underlying patterns before model development.
+\subsection{Operational Performance}
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{line_return_vs_real_2000s.png}
-    \caption{Monthly vs Real Return (2000–2009)}
-    \label{fig:line_re}
+    % Ảnh bên trái
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.6\textwidth]{Img/OPC_1.png}
+        \caption{Airline distribution}
+        \label{fig:Airline_distribution}
+    \end{subfigure}
+    \hfill
+    % Ảnh bên phải
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Img/OUC_2.png}
+        \caption{Percentage of Flights Delayed More Than 15 Minutes by Airline}
+        \label{fig:flights_Ariline}
+    \end{subfigure}
+
+    \caption{Airline operational overview showing flight distribution and delay rate performance}
+    \label{fig:airline}
 \end{figure}
 
-In Figure~\ref{fig:line_re}, both monthly and real returns display high volatility during the 2000–2009 period, which covers the dot-com crash (2000–2002) and the Global Financial Crisis (2008).
-\begin{itemize}
-\item Real returns often drop deeper than nominal returns, especially during crisis years.
-\item Sharp negative spikes in 2000–2002 and 2008 highlight how inflation-adjusted outcomes can be more severe.
-\end{itemize}
-Evaluating performance without accounting for inflation may underestimate the true impact of crises. Therefore, crises challenge assumptions of growth and stability, requiring careful consideration of real returns for investment decisions.
+As shown in Figure~\ref{fig:airline} provides an overview of airline operational performance, combining flight distribution and delay rate across carriers.
+Alaska Airlines (AS) and SkyWest (OO) account for most flights in the dataset, reflecting their dominance in regional operations. However, delay rates differ notably among carriers. JetBlue (B6) and Hawaiian (HA) record the highest proportions of delayed flights, while SkyWest (OO) and Delta (DL) maintain better on-time performance.
+These variations indicate differences in network efficiency and operational reliability. Large carriers with well-coordinated schedules experience fewer delays, whereas smaller or regional airlines are more affected by congestion, route length, and weather disruptions.
 
-\section{Valuation Metrics}
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{scatter_cape_dividend.png}
-    \caption{Scatter Plot: PE10 vs Dividend Yield}
-    \label{fig:scatter_}
+    % Ảnh bên trái
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.85\textwidth]{Img/origin.png}
+        \caption{Delay Rate by Departure Airport}
+        \label{fig:origin}
+    \end{subfigure}
+    \hfill
+    % Ảnh bên phải
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Img/origin_dest.png}
+        \caption{Top 10 Routes with Highest Delay Rate}
+        \label{fig:origin_dest}
+    \end{subfigure}
+
+    \caption{Flight delay patterns across airports and routes}
+    \label{fig:ori}
 \end{figure}
 
-From Figure~\ref{fig:scatter_}, there is a clear negative relationship between the cyclically adjusted PE10 and dividend yield. We can conclude that when valuations are stretched, the income cushion from dividends diminishes. This directly supports the problem statement that examining PE10 and dividends under stress helps investors assess vulnerabilities and prepare for downturns.
+Figure~\ref{fig:ori} shows how flight delays vary across departure airports and routes.
+Seattle (SEA) records the highest average delay rate, reflecting heavy traffic and hub congestion, while smaller airports like Pasco (PSC) and Bellingham (BLI) show better on-time performance.
+Among flight routes, SEA–HOU and GEG–SNA exhibit the highest delay rates, exceeding 50\%, indicating that long-haul and hub-connected routes are more prone to disruptions.
+Overall, the analysis suggests that airport size, route distance, and air traffic intensity play key roles in delay occurrence, with major hubs experiencing greater schedule pressure compared to smaller regional airports.
 
-
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{line_pe10.png}
-    \caption{PE10 over time}
-    \label{fig:line_pe10}
+    \includegraphics[width=0.8\textwidth]{Img/distance.png}
+    \caption{Percentage of Flights Delayed more than 15 min by Distance Group}
+    \label{fig:dis}
 \end{figure}
 
-In Figure~\ref{fig:line_pe10}, the PE10 rises sharply during expansionary phases but then quickly contracts once crises unfold.
-\begin{itemize}
-\item Valuations peaked during the late 1990s dot-com bubble, reaching historically extreme levels ($\approx 48$) before collapsing as the dot-com bubble burst.
-\item It fell again during the Global Financial Crisis, and spiked once more around COVID-19 before adjusting downward.
-\end{itemize}
-Extreme valuations rarely persist and tend to reverse sharply under stress, supporting hat PE ratios can serve as early signals of market vulnerability.
+According to Figure~\ref{fig:dis}, short-haul flights (Groups 1–3) show relatively low delay rates around 17–20\%, while medium- to long-haul flights (Groups 7–11) reach nearly 25\%.
+This pattern suggests that longer routes are more exposed to operational disruptions such as air traffic control coordination, weather variations across regions, and limited flexibility in scheduling.
+However, the difference is not extreme, implying that both short and long flights can experience delays depending on network congestion and turnaround efficiency.
 
-\section{Risk}
 
-\begin{figure}[h!]
+Overall, the operational analysis shows that delay patterns are not evenly distributed across airlines, airports, or routes.
+Major hubs and long-haul connections tend to experience higher delay rates, which may be caused by congestion, air traffic complexity, and tight scheduling.
+Conversely, smaller carriers and regional airports maintain more stable on-time performance.
+These findings suggest that operational capacity and traffic management could be key factors influencing flight punctuality.
+
+\subsection{Temporal and Environmental Patterns}
+Flight delays are often influenced not only by operational factors but also by when and under what conditions flights take place.
+This part examines how delays vary throughout the day and week, and how weather elements such as wind speed or visibility contribute to schedule disruptions.
+By combining temporal and environmental perspectives, the analysis helps identify periods and conditions where delays are more likely to occur.
+
+
+\begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{line_volatility_12m.png}
-    \caption{12-Month Volatility over time }
-    \label{fig:line_vol}
+    % Ảnh bên trái
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Img/time_of_day.png}
+        \caption{Delay Rate by Time of Day}
+        \label{fig:day}
+    \end{subfigure}
+    \hfill
+    % Ảnh bên phải
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Img/day_of_week.png}
+        \caption{Delay Rate by Day of Week}
+        \label{fig:week}
+    \end{subfigure}
+
+    \caption{Temporal delay patterns by time of day and day of week}
+    \label{fig:time}
 \end{figure}
 
-Figure~\ref{fig:line_vol} shows the 12-month rolling volatility clearly spikes during financial crises.
-\begin{itemize}
-\item Volatility surged during the dot-com crash, reached extreme levels (close to 70\%) in the Global Financial Crisis, and rose again during the COVID-19 shock.
-\item Between crises, volatility gradually declined as markets stabilized, highlighting its cyclical nature.
-\end{itemize}
-These recurring surges demonstrate how crises generate extreme uncertainty, disrupt stability and reinforcing that volatility is a key measure of market stress and risk exposure.
+Figure~\ref{fig:time} presents temporal patterns of flight delays across different times of day and days of the week.
+Delays increase steadily from morning to evening, with the highest average delay rate during evening flights, likely due to accumulated schedule disruptions and air traffic congestion throughout the day.
+By contrast, night and early-morning flights show fewer delays, benefiting from lower traffic volumes and more stable operations.
+Across the week, Thursdays and Sundays display slightly higher delay rates, possibly reflecting increased travel demand before weekends and at the end of the week.
 
-\clearpage
-\section{Dividends}
-
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
-    % \includegraphics[width=0.8\textwidth]{line_dividend_yield_highlight.png}
-    \caption{Dividend Yield with Highlighted Crisis Periods (1980–2023) }
-    \label{fig:line_dividend}
+    \includegraphics[width=0.8\textwidth]{Img/wind_group.png}
+    \caption{Delay Rate by Wind Speed Group}
+    \label{fig:wind}
 \end{figure}
 
-As shown in Figure~\ref{fig:line_dividend}, the dividend yield shows a long-term declining trend but with noticeable spikes during crises.
-\begin{itemize}
-\item Yields were above 5\% in the early 1980s but steadily declined to near 1\% around the dot-com crash, reflecting elevated valuations and reduced income returns.
-\item During the Global Financial Crisis, yields briefly rebounded above 3\% as stock prices fell sharply.
-\item In the COVID-19 shock, yields rose only modestly, staying below earlier peaks.
-\end{itemize}
-While dividends provide some cushion during downturns, their effectiveness has weakened over time as yields have trended lower. This directly supports the problem statement that analyzing dividends under stress is critical for understanding market resilience and investor income security.
 
+In Figure~\ref{fig:wind}, the delay rate gradually increases with wind speed, reaching its peak at 15–25 mph, when stronger crosswinds tend to slow down takeoff and landing operations.
+These results indicate that both wind and visibility significantly affect operational efficiency.
+Although modern navigation systems help mitigate such disruptions, adverse weather remains a major external factor that airlines must manage to maintain schedule reliability.
+
+Overall, the temporal and weather analyses show that delays are more common during evening and late-week flights, reflecting higher traffic and schedule congestion.
+Adverse weather, especially strong winds, further worsens punctuality.
+These combined effects highlight that both timing and environmental conditions play key roles in shaping flight delay patterns.
+\section{Correlation and Statistical Tests}
+This section examines how flight operation and weather variables correlate with departure delay (\texttt{DEP\_DEL15}) and evaluates their statistical significance.
+
+\begin{itemize}
+\item \textbf{Correlation among Numerical Features}
+
+The Pearson correlation results show that:
+\begin{itemize}
+    \item \texttt{CRS\_DEP\_TIME} has the highest positive correlation with delay ($r = 0.15, p < 0.001$), suggesting that later flights tend to be more delayed.
+    \item Weather variables such as \texttt{HourlyDryBulbTemperature} and \texttt{HourlyWindSpeed} have very weak correlations ($r < 0.1$).
+    \item \texttt{DISTANCE} and \texttt{CRS\_ELAPSED\_TIME} are highly correlated with each other but not with delay.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Img/Correlation_Heatmap.png}
+    \caption{Correlation Heatmap}
+    \label{fig:line_sp}
+\end{figure}
+
+These results imply that \textbf{operational factors} (especially departure time) have a stronger linear effect on delay than \textbf{weather conditions}.
+
+\item \textbf{Association between Categorical Features and Delay}
+
+Chi-square tests confirm statistically significant relationships ($p < 0.001$) between delay occurrence and variables such as:
+\begin{itemize}
+    \item \texttt{OP\_UNIQUE\_CARRIER} -- delay rates vary across airlines.
+    \item \texttt{ORIGIN} -- airports differ in on-time performance.
+    \item \texttt{TIME\_OF\_DAY} and \texttt{MONTH} -- delays are more likely during specific hours or months.
+\end{itemize}
+
+This indicates that \textbf{delay frequency depends on both airline and scheduling factors}, not randomly distributed.
+
+\vspace{1em}
+
+\end{itemize}
+In summary, correlation and hypothesis tests consistently highlight that \textbf{flight operation factors} (airline, airport, time of departure) significantly influence delay probability, while \textbf{weather features} show weak but statistically significant correlations.
+
+\chapter{Modeling}
+\section{Model Overview}
+This study addresses flight delay prediction as a binary classification problem, aiming to determine whether a flight will be delayed by 15 minutes or more (DEP\_DEL15 = 1). The dataset integrates both operational and meteorological features, allowing the model to capture scheduling and weather effects simultaneously.
+
+The modeling pipeline includes data splitting, feature scaling, imbalance handling, model training, and evaluation. Five machine learning models were implemented: Logistic Regression, KNN, Random Forest, XGBoost, and LightGBM. The F1-score was chosen as the primary evaluation metric to balance precision and recall in this imbalanced classification task.
+
+\section{Data Preparation for Modeling}
+Before model training, several preprocessing steps were applied to ensure data quality and compatibility with different algorithms. We use 80\% of our data for training and use the remaining 20\% for testing to evaluate the performance of our model.
+
+Categorical variables such as airline, origin, and destination were encoded using Label Encoding. Numerical features were scaled depending on the model type: StandardScaler for Logistic Regression to to normalize feature magnitudes, and MinMaxScaler for K-Nearest Neighbors due to its distance sensitivity. Tree-based models (Random Forest, XGBoost, and LightGBM) were trained directly on unscaled feature.
+
+To address the strong class imbalance between delayed and on-time flights, two strategies were employed: SMOTE oversampling to synthetically increase minority class, and model-based balancing. These steps ensured that each model could learn representative patterns and reduced bias toward the majority (non-delayed) class.
+
+\section{Model Selection}
+To identify the most suitable model for flight delay prediction, five supervised learning algorithms were evaluated: Logistic Regression, K-Nearest Neighbors (K = 3), Random Forest, XGBoost, and LightGBM.
+These models represented different learning strategies—linear, distance-based, and ensemble methods—allowing for a comprehensive performance comparison.
+\begin{itemize}
+
+\item Logistic Regression served as a simple linear baseline model that estimates the probability of delay based on a weighted combination of input features.
+\item K-Nearest Neighbors (K = 3) is a distance-based algorithm that classifies a flight by identifying the majority class among its nearest neighbors. It is effective for capturing local patterns but can be sensitive to feature scaling.
+\item Random Forest is an ensemble method that combines multiple decision trees trained on random subsets of data and features. It helps reduce overfitting and improves prediction stability.
+\item XGBoost and LightGBM are gradient boosting algorithms that build decision trees sequentially to correct previous errors. They are highly efficient, capable of modeling nonlinear relationships, and perform robustly on tabular data. LightGBM also includes built-in mechanisms to handle class imbalance effectively.
+\end{itemize}
+
+Each model was trained using the preprocessed dataset, with the appropriate scaling and imbalance-handling techniques applied. Hyperparameter tuning was performed using GridSearchCV with three-fold cross-validation, and the F1-score was chosen as the main evaluation metric because it balances precision and recall in imbalanced classification tasks.
+
+After model training, an optimal decision threshold was determined for each model by maximizing the F1-score obtained from the precision–recall curve, instead of using the default probability cutoff of 0.5.
+
+\chapter{Results and Discussion}
+
+\section{Model Performance}
+
+The performance of all models was evaluated using four main metrics: Precision, Recall, F1-score, and ROC-AUC. Since the dataset was highly imbalanced, with many more on-time flights than delayed ones, the F1-score was chosen as the main evaluation criterion. This score provides a balanced view of model performance by combining both precision and recall.
+\begin{itemize}
+    \item The F1-score is useful for imbalanced data because it does not depend only on accuracy, which can be misleading when one class dominates.
+    \item In this study, recall was especially important. Detecting most delayed flights (high recall) is more valuable for airlines than avoiding false alarms (high precision), since early detection allows for better scheduling and passenger management.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{Model}  & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{ROC-AUC} \\
+\hline
+Logistic Regression & 0.29 & 0.65 & 0.40 & 0.64 \\
+KNN (k=3) & 0.29 & 0.47 & 0.36 & 0.60 \\
+Random Forest (default) & 0.38 & 0.24 & 0.30 & 0.66 \\
+Random Forest (optimize) & 0.30 & 0.67 & 0.42 & 0.66 \\
+XGBoost (default) & 0.45 & 0.20 & 0.28 & 0.68 \\
+XGBoost (optimize )& 0.29 & 0.48 & 0.43 & 0.68 \\
+LightGBM (default) & 0.34 & 0.66 & 0.45 & 0.71 \\
+LightGBM (optimize) & \textbf{0.34} & \textbf{0.69} & \textbf{0.46} & \textbf{0.71} \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\caption{Summary of model performance metrics}
+\label{tab:model_performance}
+\end{table}
+
+Among all tested models, LightGBM achieved the highest recall and the best overall F1-score, making it the most effective model for practical flight delay prediction.
+\begin{itemize}
+    \item Its ability to detect a large number of delayed flights is valuable for real-world applications, even if precision remains moderate.
+    \item This means the model is better at identifying potential delays, which is more useful for airlines that need early warnings rather than perfect accuracy.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Img/threshold_score.png}
+    \caption{Precision–Recall–F1 curve for threshold optimization of the LightGBM model}
+    \label{fig:optimized_threshold}
+\end{figure}
+
+After applying threshold optimization, the balance between precision and recall improved slightly. This adjustment allowed the model to maintain strong recall while increasing precision, leading to a more stable and reliable performance.
+
+Overall, the optimized LightGBM model provided the best trade-off between sensitivity and prediction accuracy among all classifiers tested.
+
+\section{Visualization and Discussion}
+
+This section visualizes the performance of the LightGBM model using three plots: confusion matrix, ROC curve and feature importance. These figures help interpret how well the model distinguishes delayed flights and which features contribute most to its predictions.
+    
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Img/Confusion_matrix_L.png}
+    \caption{Confusion Matrix of the LightGBM Model}
+    \label{fig:confusion_matrix}
+\end{figure}
+
+The confusion matrix in  Figure~\ref{fig:confusion_matrix} shows the LightGBM model’s classification results after threshold optimization.
+\begin{itemize}
+    \item The model correctly predicted most on-time flights (4,411 true negatives) and successfully identified 1,376 delayed flights (true positives).
+    \item However, 606 delayed flights were missed (false negatives), and 2,658 on-time flights were incorrectly classified as delayed (false positives).
+\end{itemize}
+
+This result explains the model’s high recall but relatively low precision, meaning it effectively detects delays but still raises some false alarms. This pattern can be explained by the imbalanced nature of the dataset, the influence of several operational factors such as aircraft inspections, boarding procedures, and airport congestion, and the fact that the LightGBM model was optimized to maximize recall, which naturally reduces precision.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Img/ROC.png}
+    \caption{ROC curve of the LightGBM model}
+    \label{fig:Roc}
+\end{figure}
+
+The ROC curve in Figure~\ref{fig:Roc} illustrates the trade-off between the True Positive Rate (Recall) and False Positive Rate across different thresholds.
+\begin{itemize}
+    \item The LightGBM model achieved an AUC of 0.713, indicating a fair ability to distinguish between delayed and on-time flights.
+    \item The red point represents the optimized threshold ($\approx 0.49$) that maximizes the F1-score.
+\end{itemize}
+
+Although the curve does not reach very high sensitivity, it shows consistent predictive capability, suggesting that the model generalizes reasonably well despite data imbalance and operational variability.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Img/feature_im.png}
+    \caption{ROC curve of the LightGBM model}
+    \label{fig:features}
+\end{figure}
+
+    As shown in Figure~\ref{fig:features} presents the feature importance values from the LightGBM model.
+\begin{itemize}
+    \item The most influential variables are \texttt{CRS\_DEP\_TIME}, \texttt{CRS\_ELAPSED\_TIME}, and \texttt{DAY\_OF\_MONTH}.
+    \item These scheduling features are followed by meteorological indicators such as \texttt{Humidity}, \texttt{DewPointTemperature} and \texttt{HourlyDryBulbTemperature}, which also play a significant role.
+\end{itemize}
+
+This suggests that both flight timing and environmental conditions are key determinants of delay occurrence, aligning with practical expectations in airline operations.
+
+\section{Limitations and Future Work}
+While the LightGBM model achieved the best overall performance with an F1-score of 0.46 and an AUC of 0.71, its precision remained relatively low. This reflects the challenge of predicting rare delay events and the trade-off between recall and precision in imbalanced datasets. Some influencing factors, such as real-time maintenance, crew scheduling, or air traffic control delays, were not included in the dataset, which limits the model’s ability to fully capture operational complexity. In addition, weather data were aggregated on an hourly basis, which may overlook short-term variations affecting flight punctuality. Despite these limitations, the model provides meaningful insights and a strong foundation for further improvement in airline delay prediction systems.
+
+
+Although this project has successfully developed a predictive model and provided valuable analytical insights into flight delays, several directions can still be explored to further enhance and extend its scope in future research and development:
+
+\begin{itemize}
+    \item \textbf{Develop a real-time data pipeline} to automatically extract and process flight and weather information from public APIs, enabling continuous updates and near real-time predictions.
+    \item \textbf{Enrich the dataset} with additional contextual features such as aircraft type, air traffic density, holiday indicators, or seasonal patterns to improve model performance.
+    \item \textbf{Explore advanced and hybrid models} (e.g., ensemble or deep learning approaches) to enhance prediction accuracy and interpretability.
+    \item \textbf{Deploy an interactive dashboard or API} to make the system accessible for end-users and support data-driven decision-making.
+    \item \textbf{Automate retraining and monitoring} to ensure long-term adaptability of the model under changing flight and weather conditions.
+\end{itemize}
 
 \chapter*{Conclusion}
-Through the analysis of the S\&P 500 index from 1980 to 2023, this study shows how financial crises have shaped market performance, valuation, and risk. The results show that while the index demonstrates long-term growth, crisis periods are characterized by extreme volatility, sharp valuation corrections, and temporary spikes in dividend yields. These patterns confirm that financial crises create significant stress in equity markets, challenging assumptions of stability and long-term trends.\\
 
-The findings provide not only a descriptive picture of historical market behavior but also practical implications. Investors can use insights from valuation ratios and volatility as early warning signals for future downturns, while policymakers may rely on these indicators to better understand systemic risks. Moreover, the derived features—such as real returns, dividend yield, and rolling volatility—create a strong base for quantitative modeling and forecasting of market resilience.\\
+This study analyzed flight and weather data in Washington State to explore factors influencing departure delays. The results show that delays are not random but strongly linked to departure time and weather conditions such as visibility, humidity, and wind speed. These insights highlight how both operational and environmental factors shape flight punctuality.
 
-Overall, this project demonstrates the value of combining data engineering with statistical and visualization methods. By transforming historical financial data into structured insights, the study not only documents how the S\&P 500 behaves under crises but also provides lessons that can support decision-making in risk management, portfolio strategy, and economic policy.
+By combining flight and weather datasets, the project built machine-learning models that can predict delays with good accuracy, with LightGBM performing best overall. The analysis provides useful information for improving flight scheduling and managing disruptions more proactively.
 
-\chapter*{References}
+Finally, the work demonstrates how data engineering and machine learning can turn raw operational data into actionable insights. Future improvements may include extending the dataset and developing a real-time prediction pipeline for live delay monitoring.
 
-% \bibitem{datahub}
-% DataHub. (2023). 
-% \textit{S\&P 500 Dataset}. 
-% Retrieved from \url{https://datahub.io/core/s-and-p-500}
-% \bibitem{danielsson2018}
-% Danielsson, J., Valenzuela, M., \& Zer, I. (2018). 
-% \textit{Learning from History: Volatility and Financial Crises}. 
+\begin{thebibliography}{99}
 
-% \bibitem{balubaid2014}
-% Balubaid, F. (2014). 
-% \textit{Financial Crisis and Stock Market Performance: An Analysis of the S\&P 500}. 
-% Major Research Paper, Saint Mary’s University.
-% \bibitem{Mostafavi2025}Mostafavi, S.M. et al. (2025). \textit{Key technical indicators for stock market prediction }
-% \bibitem{Lejay2025}Lejay, A. & Pigato, P. (2017) \textit{A threshold model for local volatility: evidence of leverage and mean reversion effects on historical data}
+\bibitem{btsdata}
+Bureau of Transportation Statistics (BTS). \textit{Airline On-Time Performance Data}. U.S. Department of Transportation. Available at: \url{https://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp}
+
+\bibitem{noaa}
+National Oceanic and Atmospheric Administration (NOAA). \textit{Integrated Surface Database (ISD): Hourly Weather Observations}. Available at: \url{https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database}
+
+\bibitem{btsreport}
+Bureau of Transportation Statistics. \textit{Understanding Airline Delays and Cancellations}. Washington, DC: U.S. Department of Transportation, 2023. Available at: \url{https://www.bts.gov/}
+
+\bibitem{bregman2021}
+Bregman, J., \& Hayashi, M. (2021). \textit{Flight Delay Prediction Using Machine Learning: A Data-Driven Approach}. \textit{Transportation Research Procedia}, 59, 383–392. \url{https://doi.org/10.1016/j.trpro.2021.06.044}
+
+\bibitem{faa2010}
+Ball, M., Barnhart, C., Dresner, M., Hansen, M., Odoni, A., \& Zou, B. (2010). \textit{Total Delay Impact Study: A Comprehensive Assessment of the Costs and Impacts of Flight Delay in the United States}. NEXTOR II Report, Federal Aviation Administration (FAA).
+
+\bibitem{chandran2018}
+Chandran, S., \& Sitaraman, R. (2018). \textit{Predicting Flight Delays Using Weather Data and Machine Learning Techniques}. In \textit{IEEE International Conference on Data Science and Advanced Analytics (DSAA)}.
+
+\bibitem{nguyen2023}
+Nguyen, P. T., \& Tran, D. H. (2023). \textit{Integrating Weather and Flight Operation Data for Delay Prediction Using Gradient Boosting Models}. \textit{Journal of Transportation and Logistics}, 10(2), 45–53.
+
+
+\bibitem{lightgbm}
+Ke, G., Meng, Q., Finley, T., et al. (2017). \textit{LightGBM: A Highly Efficient Gradient Boosting Decision Tree}. In \textit{Advances in Neural Information Processing Systems (NeurIPS)}.
+
+\bibitem{nws}
+National Weather Service (NWS). \textit{Aviation Weather Center: Understanding METAR and TAF Data}. Available at: \url{https://aviationweather.gov/}
+
+\end{thebibliography}
+
 \end{document}
