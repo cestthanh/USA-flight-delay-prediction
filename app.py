@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 import datetime as dt
 
-model = joblib.load(r"D:\Project DS Final\Classi_Models\xgboost.pkl")
+model = joblib.load(r"D:\Project DS Final\Classi_Models\lightgbm_best.pkl")
 
 st.set_page_config(page_title="Flight Delay Demo", layout="centered")
 st.title("✈️ Flight Delay Prediction App")
@@ -57,7 +57,7 @@ input_data = pd.DataFrame({
     "MONTH": [flight_date.month],
     "DAY_OF_MONTH": [flight_date.day],
     "DAY_OF_WEEK": [flight_date.weekday() + 1],
-    "CRS_DEP_TIME": [dep_hour * 100],      # kiểu HHMM
+    "CRS_DEP_TIME": [dep_hour * 100],    
     "CRS_ELAPSED_TIME": [90.0],
     "OP_UNIQUE_CARRIER": [carrier_map[op_unique_carrier]],
     "ORIGIN": [origin_map[origin]],
@@ -71,13 +71,14 @@ input_data = pd.DataFrame({
 })
 
 if st.button("🚀 Dự đoán"):
-    # kiểm tra hợp lệ
     if -1 in input_data.values:
         st.error("⚠️ Một hoặc nhiều giá trị không có trong mapping (hãng bay hoặc sân bay không hợp lệ).")
         st.stop()
 
-    y_pred = model.predict(input_data)[0]
-    prob = model.predict_proba(input_data)[0][1]
+    y_pred_proba = model["model"].predict_proba(input_data)[0][1]
+    threshold = model["threshold"]
+    y_pred = int(y_pred_proba >= threshold)
+    prob = model["model"].predict_proba(input_data)[0][1]
 
     st.subheader("📊 Kết quả dự đoán")
     if y_pred == 1:
