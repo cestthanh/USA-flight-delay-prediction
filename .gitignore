@@ -1,23 +1,14 @@
-# Ignore LaTeX temporary files
+# Ignore all LaTeX build files
 *.aux
-*.bbl
-*.blg
 *.fdb_latexmk
 *.fls
-*.log
-*.out
-*.synctex.gz
-*.toc
 *.lof
+*.log
 *.lot
-*.nav
-*.snm
-*.vrb
-*.idx
-*.ilg
-*.ind
+*.out
+*.synctex*
+*.toc
 
-# Ignore backup and cache
-*.bak
-*.tmp
-*.DS_Store
+# Keep only .tex and .pdf
+!*.tex
+!*.pdf
